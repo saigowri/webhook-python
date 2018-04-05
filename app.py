@@ -52,15 +52,25 @@ def webhook():
 def processRequest(req):
     if req.get("result").get("action") != "yahooWeatherForecast":
         return {}
-    baseurl = "https://query.yahooapis.com/v1/public/yql?"
+    baseurl = "https://api.railwayapi.com/v2/live/train/17229/date/05-04-2018/apikey/e5hkcdzqsj/"
     yql_query = makeYqlQuery(req)
     if yql_query is None:
         return {}
-    yql_url = baseurl + urlencode({'q': yql_query}) + "&format=json"
+    yql_url = baseurl + "&format=json"
     result = urlopen(yql_url).read()
     data = json.loads(result)
-    res = makeWebhookResult(data)
+    res = makeWebhookResult1(data)
     return res
+
+def makeWebhookResult1(data):
+    return {
+        "speech": "working",
+        "displayText": "working",
+        # "data": data,
+        # "contextOut": [],
+        "source": "apiai-weather-webhook-sample"
+    }
+
 
 
 def makeYqlQuery(req):
