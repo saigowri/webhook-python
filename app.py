@@ -56,7 +56,7 @@ def processRequest(req):
     yql_query = makeYqlQuery(req)
     if yql_query is None:
         return {}
-    yql_url = baseurl + "&format=json"
+    yql_url = baseurl
     result = urlopen(yql_url).read()
     data = json.loads(result)
     res = makeWebhookResult1(data)
