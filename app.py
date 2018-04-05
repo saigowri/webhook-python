@@ -50,7 +50,7 @@ def webhook():
 
 
 def processRequest(req):
-    if req.get("result").get("action") != "yahooWeatherForecast":
+    if req.get("result").get("action") != "tls":
         return {}
     baseurl = "https://api.railwayapi.com/v2/live/train/17229/date/05-04-2018/apikey/e5hkcdzqsj/"
     yql_query = makeYqlQuery(req)
@@ -63,12 +63,14 @@ def processRequest(req):
     return res
 
 def makeWebhookResult1(data):
+
+    speech = data.get('position')
     return {
-        "speech": "working",
-        "displayText": "working",
+        "speech": speech,
+        "displayText": speech,
         # "data": data,
         # "contextOut": [],
-        "source": "apiai-weather-webhook-sample"
+        "source": "webhook-dm"
     }
 
 
