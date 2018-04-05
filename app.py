@@ -50,8 +50,8 @@ def webhook():
 
 
 def processRequest(req):
-    if req.get("result").get("action") == "trainStatus":
-        return "nothing"
+    if req.get("result").get("action") != "trainStatus":
+        return {}
     baseurl = "https://api.railwayapi.com/v2/live/train/17229/date/05-04-2018/apikey/e5hkcdzqsj/"
 
     yql_query = makeYqlQuery(req)
