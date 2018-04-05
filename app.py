@@ -64,7 +64,7 @@ def processRequest(req):
 
 def makeWebhookResult1(data):
 
-    speech = "working"#data.get('position')
+    speech = data.get('position')
     return {
         "speech": speech,
         "displayText": speech,
