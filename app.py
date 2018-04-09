@@ -41,13 +41,28 @@ def webhook():
     print("Request:")
     print(json.dumps(req, indent=4))
 
-    res = processRequest(req)
-
+#     res = processRequest(req)
+    res = processRoute(req)
     res = json.dumps(res, indent=4)
     # print(res)
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
+
+
+def processRoute(req):
+    if req.get("result").get("action") != "trainRoute":
+        return {}
+    baseurl = "https://api.railwayapi.com/v2/route/train/17229/apikey/e5hkcdzqsj"
+#   remain = "/date/10-04-2018/apikey/e5hkcdzqsj"
+#     yql_query = makeYqlQuery(req)
+#     if yql_query is None:
+#         return {}
+    yql_url = baseurl 
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    res = makeWebhookResult2(data)
+    return res
 
 
 def processRequest(req):
@@ -68,6 +83,22 @@ def processRequest(req):
     data = json.loads(result)
     res = makeWebhookResult1(data)
     return res
+
+def makeWebhookResult2(data):
+
+#     speech = data.get('position')
+    speech = ""
+    for routes in data['route']:
+        speech = speech+" -->" + routes['station']['name']
+    return {
+        "speech": speech,
+        "displayText": speech,
+        # "data": data,
+        # "contextOut": [],
+        "source": "webhook-dm"
+    }
+
+
 
 def makeWebhookResult1(data):
 
