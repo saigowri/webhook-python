@@ -40,9 +40,10 @@ def webhook():
 
     print("Request:")
     print(json.dumps(req, indent=4))
-
-    res = processRequest(req)
-    res = processRoute(req)
+    if req.get("result").get("action") != "trainStatus":
+        res = processRequest(req)
+    if req.get("result").get("action") != "trainRoute":
+        res = processRoute(req)
     res = json.dumps(res, indent=4)
     # print(res)
     r = make_response(res)
