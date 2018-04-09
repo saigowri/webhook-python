@@ -58,7 +58,7 @@ def processRequest(req):
     day = i.day 
     month = i.month 
     year = i.year
-    today = day+"-"month"-"+year
+    today = day+"-"+month+"-"+year
     remain = "/date/"+today+"/apikey/e5hkcdzqsj/"
     yql_query = makeYqlQuery(req)
     if yql_query is None:
