@@ -54,12 +54,12 @@ def processRequest(req):
     if req.get("result").get("action") != "trainStatus":
         return {}
     baseurl = "https://api.railwayapi.com/v2/live/train/" 
-    i = datetime.datetime.now()
-    day = i.day 
-    month = i.month 
-    year = i.year
-    today = day+"-"+month+"-"+year
-    remain = "/date/10-04-2018/apikey/e5hkcdzqsj/"
+#     i = datetime.datetime.now()
+#     day = i.day 
+#     month = i.month 
+#     year = i.year
+#     today = day+"-"+month+"-"+year
+    remain = "/date/10-04-2018/apikey/e5hkcdzqsj"
     yql_query = makeYqlQuery(req)
     if yql_query is None:
         return {}
