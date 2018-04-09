@@ -55,7 +55,7 @@ def processRequest(req):
         return {}
     baseurl = "https://api.railwayapi.com/v2/live/train/" 
     i = datetime.datetime.now()
-    today = %(i.day, i.month, i.year)
+    today = i.day +"-"+ i.month +"-"+ i.year
     remain = "/date/"+today+"/apikey/e5hkcdzqsj/"
     yql_query = makeYqlQuery(req)
     if yql_query is None:
