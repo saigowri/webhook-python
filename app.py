@@ -44,11 +44,27 @@ def webhook():
         res = processRequest(req)
     if req.get("result").get("action") == "trainRoute":
         res = processRoute(req)
+    if req.get("result").get("action") == "stationCode":
+        res = processCode(req)
     res = json.dumps(res, indent=4)
     # print(res)
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
+
+def processCode(req):
+    if req.get("result").get("action") != "stationCode":
+        return {}
+    baseurl = "https://api.railwayapi.com/v2/name-to-code/station/"
+    remain = "/apikey/e5hkcdzqsj"
+    yql_query = makeQueryForPlace(req)
+    if yql_query is None:
+        return {}
+    yql_url = baseurl + yql_query + remain
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    res = makeWebhookResult3(data)
+    return res
 
 
 def processRoute(req):
@@ -85,6 +101,17 @@ def processRequest(req):
     res = makeWebhookResult1(data)
     return res
 
+
+def makeWebhookResult1(data):
+
+    speech = data.get('position')
+    return {
+        "speech": speech,
+        "displayText": speech,
+        # "data": data,
+        # "contextOut": [],
+        "source": "webhook-dm"
+    }
 def makeWebhookResult2(data):
 
 #     speech = data.get('position')
@@ -99,11 +126,12 @@ def makeWebhookResult2(data):
         "source": "webhook-dm"
     }
 
+def makeWebhookResult3(data):
 
-
-def makeWebhookResult1(data):
-
-    speech = data.get('position')
+#     speech = data.get('position')
+    speech = ""
+    for station in data['stations']:
+        speech =  speech +  station['name'] + station['code'] +"\n"
     return {
         "speech": speech,
         "displayText": speech,
@@ -113,11 +141,18 @@ def makeWebhookResult1(data):
     }
 
 
-
 def makeYqlQuery(req):
     result = req.get("result")
     parameters = result.get("parameters")
     trainnum = parameters.get("Train")
+    if trainnum is None:
+        return None
+
+    return trainnum
+def makeQueryForPlace(req):
+    result = req.get("result")
+    parameters = result.get("parameters")
+    trainnum = parameters.get("place")
     if trainnum is None:
         return None
 
