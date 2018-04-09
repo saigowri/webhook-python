@@ -40,9 +40,9 @@ def webhook():
 
     print("Request:")
     print(json.dumps(req, indent=4))
-    if req.get("result").get("action") != "trainStatus":
+    if req.get("result").get("action") == "trainStatus":
         res = processRequest(req)
-    if req.get("result").get("action") != "trainRoute":
+    if req.get("result").get("action") == "trainRoute":
         res = processRoute(req)
     res = json.dumps(res, indent=4)
     # print(res)
