@@ -22,6 +22,7 @@ from urllib.parse import urlparse, urlencode
 from urllib.request import urlopen, Request
 from urllib.error import HTTPError
 
+import datetime
 import json
 import os
 
@@ -53,7 +54,9 @@ def processRequest(req):
     if req.get("result").get("action") != "trainStatus":
         return {}
     baseurl = "https://api.railwayapi.com/v2/live/train/" 
-    remain = "/date/09-04-2018/apikey/e5hkcdzqsj/"
+    i = datetime.datetime.now()
+    today = %(i.day, i.month, i.year)
+    remain = "/date/"+today+"/apikey/e5hkcdzqsj/"
     yql_query = makeYqlQuery(req)
     if yql_query is None:
         return {}
