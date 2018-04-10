@@ -153,17 +153,17 @@ def makeWebhookResult3(data):
 #     speech = speech.sub(/\n/g,'\n');
     return {
         "speech": speech,
-        "messages": [
-        {
-          "type": 0,
-          "speech": "BANGALORE EAST  -  BNCE, \tBANGALORE CANT  -  BNC, \t"
-        },
-        {
-          "type": 0,
-          "speech": "BANGALORE EAST  -  BNCE, \tBANGALORE CANT  -  BNC, \t"
-        }
-      ],
-#         "displayText": speech,
+#         "messages": [
+#         {
+#           "type": 0,
+#           "speech": "BANGALORE EAST  -  BNCE, \tBANGALORE CANT  -  BNC, \t"
+#         },
+#         {
+#           "type": 0,
+#           "speech": "BANGALORE EAST  -  BNCE, \tBANGALORE CANT  -  BNC, \t"
+#         }
+#       ],
+         "displayText": speech,
         # "data": data,
         # "contextOut": [],
         "source": "webhook-dm"
