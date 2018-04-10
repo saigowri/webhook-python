@@ -25,6 +25,7 @@ from urllib.error import HTTPError
 import datetime
 import json
 import os
+import re
 
 from flask import Flask
 from flask import request
@@ -134,7 +135,7 @@ def makeWebhookResult3(data):
     speech = ""
     for station in data['stations']:
         speech =  speech + station['name'] +"  -  "+ station['code'] + "\n"
-    speech = speech.replace(/\n/g,'\n');
+    speech = speech.sub(/\n/g,'\n');
     return {
         "speech": speech,
         "displayText": speech,
