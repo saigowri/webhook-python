@@ -154,11 +154,9 @@ def makeYqlQuery(req):
 def makeQueryForPlace(req):
     result = req.get("result")
     parameters = result.get("parameters")
-    trainnum = parameters.get("place")
+    trainnum = parameters.get("geo-city")
     if trainnum is None:
-        result = req.get("result")
-        parameters = result.get("parameters")
-        trainnum2 = parameters.get("geo-city") 
+        trainnum2 = parameters.get("place") 
         if trainnum2 is None:
             return {}
         return trainnum2
