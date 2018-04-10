@@ -157,6 +157,10 @@ def makeWebhookResult3(data):
         {
           "type": 0,
           "speech": "BANGALORE EAST  -  BNCE, \tBANGALORE CANT  -  BNC, \t"
+        },
+        {
+          "type": 0,
+          "speech": "BANGALORE EAST  -  BNCE, \tBANGALORE CANT  -  BNC, \t"
         }
       ],
 #         "displayText": speech,
