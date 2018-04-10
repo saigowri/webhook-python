@@ -134,8 +134,8 @@ def makeWebhookResult3(data):
 #     speech = data.get('position')
     speech = ""
     for station in data['stations']:
-        speech =  speech + station['name'] +"  -  "+ station['code'] + "\n"
-    speech = speech.sub(/\n/g,'\n');
+        speech =  speech + station['name'] +"  -  "+ station['code'] + ", \t"
+#     speech = speech.sub(/\n/g,'\n');
     return {
         "speech": speech,
         "displayText": speech,
