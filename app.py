@@ -155,12 +155,12 @@ def makeQueryForPlace(req):
     result = req.get("result")
     parameters = result.get("parameters")
     trainnum = parameters.get("geo-city")
-    if trainnum is None:
-        trainnum2 = parameters.get("place") 
-        if trainnum2 is None:
-            return {}
+    if trainnum:
+        return trainnum
+    trainnum2 = parameters.get("place") 
+    if trainnum2:
         return trainnum2
-    return trainnum
+    return {}
 
 def makeWebhookResult(data):
     query = data.get('query')
