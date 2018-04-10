@@ -55,7 +55,9 @@ def webhook():
 def processCode(req):
     if req.get("result").get("action") != "stationCode":
         return {}
-    baseurl = "https://api.railwayapi.com/v2/name-to-code/station/"
+#     baseurl = "https://api.railwayapi.com/v2/name-to-code/station/"
+#     remain = "/apikey/e5hkcdzqsj"
+    baseurl = "https://api.railwayapi.com/v2/suggest-station/name/"
     remain = "/apikey/e5hkcdzqsj"
     yql_query = makeQueryForPlace(req)
     if yql_query is None:
