@@ -156,8 +156,11 @@ def makeQueryForPlace(req):
     parameters = result.get("parameters")
     trainnum = parameters.get("place")
     if trainnum is None:
-        return None
-
+        result = req.get("result")
+        parameters = result.get("parameters")
+        trainnum = parameters.get("geo-city") 
+        if trainnum is None:
+            return {}
     return trainnum
 
 
