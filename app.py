@@ -120,19 +120,13 @@ def makeWebhookResult2(data):
     speech = ""
     for routes in data['route']:
         speech =  speech +routes['station']['name'] + " -> "
-    return [{
+    return {
         "speech": speech,
         "displayText": speech,
         # "data": data,
         # "contextOut": [],
         "source": "webhook-dm"
-    },{
-        
-        "speech": speech,
-        "displayText": speech,
-        # "data": data,
-        # "contextOut": [],
-        "source": "webhook-dm"}]
+    }
 
 def makeWebhookResult3(data):
 
