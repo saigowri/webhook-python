@@ -117,7 +117,7 @@ def makeWebhookResult2(data):
 #     speech = data.get('position')
     speech = ""
     for routes in data['route']:
-        speech =  speech +  routes['station']['name'] + "->"
+        speech =  speech +routes['station']['name'] + " -> "
     return {
         "speech": speech,
         "displayText": speech,
@@ -131,7 +131,8 @@ def makeWebhookResult3(data):
 #     speech = data.get('position')
     speech = ""
     for station in data['stations']:
-        speech =  speech +  station['name'] +"  -  "+ station['code'] + ",                                "
+        speech =  speech + \
+        station['name'] +"  -  "+ station['code'] + ",                                "
     return {
         "speech": speech,
         "displayText": speech,
