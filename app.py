@@ -47,12 +47,28 @@ def webhook():
         res = processRoute(req)
     if req.get("result").get("action") == "stationCode":
         res = processCode(req)
+    if req.get("result").get("action") == "Tr_Name_to_Code":
+        res = processTrainNumber(req)
     res = json.dumps(res, indent=4)
     # print(res)
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
 
+
+def processCode(req):
+    if req.get("result").get("action") != "stationCode":
+        return {}
+    baseurl = "ttps://api.railwayapi.com/v2/suggest-station/name/"
+    remain = "/apikey/e5hkcdzqsj"
+    yql_query = makeYqlQuery(req)
+    if yql_query is None:
+        return {}
+    yql_url = baseurl + yql_query + remain
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    res = makeWebhookResult4(data)
+    return res
 def processCode(req):
     if req.get("result").get("action") != "stationCode":
         return {}
@@ -131,11 +147,27 @@ def makeWebhookResult2(data):
 
 def makeWebhookResult3(data):
 
-#     speech = data.get('position')
     speech = ""
     for station in data['stations']:
         speech =  speech + station['name'] +"  -  "+ station['code'] + ", \t"
 #     speech = speech.sub(/\n/g,'\n');
+    return {
+        "speech": speech,
+        "messages": [
+        {
+          "type": 0,
+          "speech": "BANGALORE EAST  -  BNCE, \tBANGALORE CANT  -  BNC, \t"
+        }
+      ],
+#         "displayText": speech,
+        # "data": data,
+        # "contextOut": [],
+        "source": "webhook-dm"
+    }
+def makeWebhookResult4(data):
+    speech = ""
+    for routes in data['route']:
+        speech =  speech +routes['station']['name'] + " -> "
     return {
         "speech": speech,
         "displayText": speech,
@@ -143,7 +175,6 @@ def makeWebhookResult3(data):
         # "contextOut": [],
         "source": "webhook-dm"
     }
-
 
 def makeYqlQuery(req):
     result = req.get("result")
@@ -163,6 +194,7 @@ def makeQueryForPlace(req):
     if trainnum2:
         return trainnum2
     return {}
+
 
 def makeWebhookResult(data):
     query = data.get('query')
