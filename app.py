@@ -147,10 +147,12 @@ def makeWebhookResult2(data):
 
 def makeWebhookResult3(data):
 
-    speech = []
+    msg = []
+    speech = ""
     for station in data['stations']:
-        speech.append(station['name'] +"  -  "+ station['code'])
-    messages = [{"type": 0, "speech": s[0]} for s in zip(speech)]
+        speech = speech + station['name'] +"  -  "+ station['code'] + ", "
+        msg.append(station['name'] +"  -  "+ station['code'])
+    messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
     reply = {
             "speech": speech,
             "displayText": speech,
