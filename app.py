@@ -59,12 +59,12 @@ def webhook():
 def processTrainNumber(req):
     if req.get("result").get("action") != "Tr_Name_to_Code":
         return {}
-    baseurl = "https://api.railwayapi.com/v2/suggest-train/train/sabari/apikey/e5hkcdzqsj"
-#     remain = "/apikey/e5hkcdzqsj"
+    baseurl = "https://api.railwayapi.com/v2/suggest-train/train/sabari"
+    remain = "/apikey/e5hkcdzqsj"
 #     yql_query = makeYqlQuery(req)
 #     if yql_query is None:
 #         return {}
-    yql_url = baseurl 
+    yql_url = baseurl + remain
     result = urlopen(yql_url).read()
     data = json.loads(result)
     res = makeWebhookResult4(data)
@@ -165,8 +165,8 @@ def makeWebhookResult4(data):
     speech = ""
     for train in data['trains']:
         speech = speech + train['name'] +"  -  "+ train['number'] + ", "
-#         msg.append(station['name'] +"  -  "+ station['number'])
-#     messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
+        msg.append(train['name'] +"  -  "+ train['number'])
+    messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
     reply = {
             "speech": speech,
             "displayText": speech,
