@@ -22,8 +22,10 @@ from urllib.parse import urlparse, urlencode
 from urllib.request import urlopen, Request
 from urllib.error import HTTPError
 
+import datetime
 import json
 import os
+import re
 
 from flask import Flask
 from flask import request
@@ -39,9 +41,14 @@ def webhook():
 
     print("Request:")
     print(json.dumps(req, indent=4))
-
-    res = processRequest(req)
-
+    if req.get("result").get("action") == "trainStatus":
+        res = processRequest(req)
+    if req.get("result").get("action") == "trainRoute":
+        res = processRoute(req)
+    if req.get("result").get("action") == "stationCode":
+        res = processCode(req)
+    if req.get("result").get("action") == "Tr_Name_to_Code":
+        res = processTrainNumber(req)
     res = json.dumps(res, indent=4)
     # print(res)
     r = make_response(res)
@@ -49,18 +56,70 @@ def webhook():
     return r
 
 
-def processRequest(req):
-    if req.get("result").get("action") != "tls":
+def processCode(req):
+    if req.get("result").get("action") != "stationCode":
         return {}
-    baseurl = "https://api.railwayapi.com/v2/live/train/17229/date/05-04-2018/apikey/e5hkcdzqsj/"
+    baseurl = "ttps://api.railwayapi.com/v2/suggest-station/name/"
+    remain = "/apikey/e5hkcdzqsj"
     yql_query = makeYqlQuery(req)
     if yql_query is None:
         return {}
-    yql_url = baseurl
+    yql_url = baseurl + yql_query + remain
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    res = makeWebhookResult4(data)
+    return res
+def processCode(req):
+    if req.get("result").get("action") != "stationCode":
+        return {}
+#     baseurl = "https://api.railwayapi.com/v2/name-to-code/station/"
+#     remain = "/apikey/e5hkcdzqsj"
+    baseurl = "https://api.railwayapi.com/v2/suggest-station/name/"
+    remain = "/apikey/e5hkcdzqsj"
+    yql_query = makeQueryForPlace(req)
+    if yql_query is None:
+        return {}
+    yql_url = baseurl + yql_query + remain
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    res = makeWebhookResult3(data)
+    return res
+
+
+def processRoute(req):
+    if req.get("result").get("action") != "trainRoute":
+        return {}
+    baseurl = "https://api.railwayapi.com/v2/route/train/"
+    remain = "/apikey/e5hkcdzqsj"
+    yql_query = makeYqlQuery(req)
+    if yql_query is None:
+        return {}
+    yql_url = baseurl + yql_query + remain
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    res = makeWebhookResult2(data)
+    return res
+
+
+def processRequest(req):
+    if req.get("result").get("action") != "trainStatus":
+        return {}
+    baseurl = "https://api.railwayapi.com/v2/live/train/" 
+    i = datetime.datetime.now()
+    day = i.day 
+    month = i.month 
+    year = i.year
+    today = "10-04-2018"
+    remain = "/date/"+today+"/apikey/e5hkcdzqsj/"
+    yql_query = makeYqlQuery(req)
+    if yql_query is None:
+        return {}
+    yql_url = baseurl + yql_query + remain
     result = urlopen(yql_url).read()
     data = json.loads(result)
     res = makeWebhookResult1(data)
     return res
+
 
 def makeWebhookResult1(data):
 
@@ -72,17 +131,73 @@ def makeWebhookResult1(data):
         # "contextOut": [],
         "source": "webhook-dm"
     }
+def makeWebhookResult2(data):
 
+#     speech = data.get('position')
+    speech = ""
+    for routes in data['route']:
+        speech =  speech +routes['station']['name'] + " -> "
+    return {
+        "speech": speech,
+        "displayText": speech,
+        # "data": data,
+        # "contextOut": [],
+        "source": "webhook-dm"
+    }
 
+def makeWebhookResult3(data):
+
+    speech = ""
+    for station in data['stations']:
+        speech =  speech + station['name'] +"  -  "+ station['code'] + ", \t"
+#     speech = speech.sub(/\n/g,'\n');
+    return {
+        "speech": speech,
+#         "messages": [
+#         {
+#           "type": 0,
+#           "speech": "BANGALORE EAST  -  BNCE, \tBANGALORE CANT  -  BNC, \t"
+#         },
+#         {
+#           "type": 0,
+#           "speech": "BANGALORE EAST  -  BNCE, \tBANGALORE CANT  -  BNC, \t"
+#         }
+#       ],
+         "displayText": speech,
+        # "data": data,
+        # "contextOut": [],
+        "source": "webhook-dm"
+    }
+def makeWebhookResult4(data):
+    speech = ""
+    for routes in data['route']:
+        speech =  speech +routes['station']['name'] + " -> "
+    return {
+        "speech": speech,
+        "displayText": speech,
+        # "data": data,
+        # "contextOut": [],
+        "source": "webhook-dm"
+    }
 
 def makeYqlQuery(req):
     result = req.get("result")
     parameters = result.get("parameters")
-    city = parameters.get("geo-city")
-    if city is None:
+    trainnum = parameters.get("Train")
+    if trainnum is None:
         return None
 
-    return "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + city + "')"
+    return trainnum
+def makeQueryForPlace(req):
+    result = req.get("result")
+    parameters = result.get("parameters")
+    trainnum = parameters.get("geo-city")
+    if trainnum:
+        return trainnum
+    trainnum2 = parameters.get("place") 
+    if trainnum2:
+        return trainnum2
+    return {}
 
 
 def makeWebhookResult(data):
