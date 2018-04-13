@@ -57,7 +57,7 @@ def webhook():
 
 
 def processTrainNumber(req):
-    if req.get("result").get("action") != "stationCode":
+    if req.get("result").get("action") != "Tr_Name_to_Code":
         return {}
     baseurl = "https://api.railwayapi.com/v2/suggest-train/train/sabari"
     remain = "/apikey/e5hkcdzqsj"
