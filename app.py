@@ -152,12 +152,8 @@ def makeWebhookResult3(data):
         speech.append(station['name'] +"  -  "+ station['code'])
     messages = [{"type": 0, "speech": s[0]} for s in zip(speech)]
     reply = {
+            "speech": speech,
             "messages": messages,
-            "data":{
-                “telegram”: {
-                [“hi”, “hello”]
-                }
-                },
             "source": "webhook-dm"
             }
     return reply
