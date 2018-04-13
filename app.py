@@ -153,6 +153,11 @@ def makeWebhookResult3(data):
     messages = [{"type": 0, "speech": s[0]} for s in zip(speech)]
     reply = {
             "messages": messages,
+            "data":{
+                “telegram”: {
+                [“hi”, “hello”]
+                }
+                },
             "source": "webhook-dm"
             }
     return reply
