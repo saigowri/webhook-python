@@ -56,19 +56,19 @@ def webhook():
     return r
 
 
-def processCode(req):
-    if req.get("result").get("action") != "stationCode":
-        return {}
-    baseurl = "https://api.railwayapi.com/v2/suggest-station/name/"
-    remain = "/apikey/e5hkcdzqsj"
-    yql_query = makeYqlQuery(req)
-    if yql_query is None:
-        return {}
-    yql_url = baseurl + yql_query + remain
-    result = urlopen(yql_url).read()
-    data = json.loads(result)
-    res = makeWebhookResult4(data)
-    return res
+# def processCode(req):
+#     if req.get("result").get("action") != "stationCode":
+#         return {}
+#     baseurl = "https://api.railwayapi.com/v2/suggest-station/name/"
+#     remain = "/apikey/e5hkcdzqsj"
+#     yql_query = makeYqlQuery(req)
+#     if yql_query is None:
+#         return {}
+#     yql_url = baseurl + yql_query + remain
+#     result = urlopen(yql_url).read()
+#     data = json.loads(result)
+#     res = makeWebhookResult4(data)
+#     return res
 def processCode(req):
     if req.get("result").get("action") != "stationCode":
         return {}
