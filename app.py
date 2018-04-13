@@ -153,6 +153,7 @@ def makeWebhookResult3(data):
     messages = [{"type": 0, "speech": s[0]} for s in zip(speech)]
     reply = {
             "speech": speech,
+            "displayText": speech,
             "messages": messages,
             "source": "webhook-dm"
             }
