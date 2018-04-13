@@ -151,15 +151,16 @@ def makeWebhookResult3(data):
     for station in data['stations']:
         speech =  speech + station['name'] +"  -  "+ station['code'] + ", \t"
 #     speech = speech.sub(/\n/g,'\n');
+    messages = [{
+               "type": 0,
+               "speech": "Testing"
+               },
+               {
+                 "type": 0,
+                  "speech": "BANGALORE EAST  -  BNCE, \tBANGALORE CANT  -  BNC, \t"
+               }]
     reply = {
-            "messages": [{
-                        "type": 0,
-                        "speech": "Testing"
-                            },
-                        {
-                        "type": 0,
-                        "speech": "BANGALORE EAST  -  BNCE, \tBANGALORE CANT  -  BNC, \t"
-                        }],
+            "messages": messages,
             "source": "webhook-dm"
             }
     return reply
