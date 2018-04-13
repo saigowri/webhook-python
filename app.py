@@ -64,7 +64,7 @@ def processTrainNumber(req):
 #     yql_query = makeYqlQueryForTrain(req)
 #     if yql_query is None:
 #         return {}
-#     yql_url = baseurl + remain
+    yql_url = baseurl + remain
     result = urlopen(yql_url).read()
     data = json.loads(result)
     res = makeWebhookResult4(data)
