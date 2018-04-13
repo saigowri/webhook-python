@@ -56,24 +56,23 @@ def webhook():
     return r
 
 
-# def processCode(req):
-#     if req.get("result").get("action") != "stationCode":
-#         return {}
-#     baseurl = "https://api.railwayapi.com/v2/suggest-station/name/"
-#     remain = "/apikey/e5hkcdzqsj"
+def processTrainNumber(req):
+    if req.get("result").get("action") != "stationCode":
+        return {}
+    baseurl = "https://api.railwayapi.com/v2/suggest-train/train/sabari"
+    remain = "/apikey/e5hkcdzqsj"
 #     yql_query = makeYqlQuery(req)
 #     if yql_query is None:
 #         return {}
-#     yql_url = baseurl + yql_query + remain
-#     result = urlopen(yql_url).read()
-#     data = json.loads(result)
-#     res = makeWebhookResult4(data)
-#     return res
+    yql_url = baseurl + remain
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    res = makeWebhookResult4(data)
+    return res
+
 def processCode(req):
     if req.get("result").get("action") != "stationCode":
         return {}
-#     baseurl = "https://api.railwayapi.com/v2/name-to-code/station/"
-#     remain = "/apikey/e5hkcdzqsj"
     baseurl = "https://api.railwayapi.com/v2/suggest-station/name/"
     remain = "/apikey/e5hkcdzqsj"
     yql_query = makeQueryForPlace(req)
@@ -160,17 +159,21 @@ def makeWebhookResult3(data):
             "source": "webhook-dm"
             }
     return reply
+
 def makeWebhookResult4(data):
+    msg = []
     speech = ""
-    for routes in data['route']:
-        speech =  speech +routes['station']['name'] + " -> "
-    return {
-        "speech": speech,
-        "displayText": speech,
-        # "data": data,
-        # "contextOut": [],
-        "source": "webhook-dm"
-    }
+    for station in data['trains']:
+        speech = speech + station['name'] +"  -  "+ station['number'] + ", "
+        msg.append(station['name'] +"  -  "+ station['number'])
+    messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
+    reply = {
+            "speech": speech,
+            "displayText": speech,
+            "messages": messages,
+            "source": "webhook-dm"
+            }
+    return reply
 
 def makeYqlQuery(req):
     result = req.get("result")
