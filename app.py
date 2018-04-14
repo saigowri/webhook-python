@@ -50,6 +50,8 @@ def webhook():
         res = processCode(req)
     if req.get("result").get("action") == "Tr_Name_to_Code":
         res = processTrainNumber(req)
+    if req.get("result").get("action") == "train_btwn_stations":
+        res = processTrainBtwnStations(req)    
     res = json.dumps(res, indent=4)
     # print(res)
     r = make_response(res)
@@ -122,6 +124,19 @@ def processTrainNumber(req):
     return res
 
 
+def processTrainBtwnStations(req):
+    if req.get("result").get("action") != "train_btwn_stations":
+        return {}
+    baseurl = "https://api.railwayapi.com/v2/between/source/gkp/dest/jat/date/"
+    remain = "16-04-2018/apikey/e5hkcdzqsj"
+#     yql_query = makeYqlQueryForTrain(req)
+#     if yql_query is None:
+#         return {}
+    yql_url = baseurl + remain
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    res = makeWebhookResultForBtwnStations(data)
+    return res
 # ----------------------------------------json data extraction functions---------------------------------------------------
 
 def makeWebhookResult1(data):
@@ -180,6 +195,22 @@ def makeWebhookResult4(data):
             }
     return reply
 
+
+
+def makeWebhookResultForBtwnStations(data):
+    msg = []
+    speech = ""
+    for train in data['trains']:
+        speech = speech +" Train : "+ train['name'] +", Starts at "+ train['src_departure_time'] +", Reaches at "+ train['dest_arrival_time'] 
+        msg.append(" Train : "+ train['name'] +", Starts at "+ train['src_departure_time'] +", Reaches at "+ train['dest_arrival_time'] )
+    messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
+    reply = {
+            "speech": speech,
+            "displayText": speech,
+            "messages": messages,
+            "source": "webhook-dm"
+            }
+    return reply
 # ------------------------------------query parameter extracting functions---------------------------------------------------
 
 
