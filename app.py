@@ -127,12 +127,18 @@ def processTrainNumber(req):
 def processTrainBtwnStations(req):
     if req.get("result").get("action") != "train_btwn_stations":
         return {}
-    baseurl = "https://api.railwayapi.com/v2/between/source/gkp/dest/jat/date/"
-    remain = "16-04-2018/apikey/e5hkcdzqsj"
-#     yql_query = makeYqlQueryForTrain(req)
-#     if yql_query is None:
-#         return {}
-    yql_url = baseurl + remain
+    baseurl = "https://api.railwayapi.com/v2/between/source/"
+    remain = "/apikey/e5hkcdzqsj"
+    yql_query_src  = makeYqlQueryForSrc(req)
+    if yql_query_src is None:
+        return {}
+    yql_query_des  = makeYqlQueryForDes(req)
+    if yql_query_des is None:
+        return {}
+    yql_query_date  = makeYqlQueryForDat(req)
+    if yql_query_date is None:
+        return {}
+    yql_url = baseurl + yql_query_src +"/dest/"+ yql_query_des +"/date/"+ date + remain
     result = urlopen(yql_url).read()
     data = json.loads(result)
     res = makeWebhookResultForBtwnStations(data)
@@ -242,6 +248,31 @@ def makeQueryForPlace(req):
         return trainnum2
     return {}
 
+
+def makeYqlQueryForSrc(req):
+    result = req.get("result")
+    parameters = result.get("parameters")
+    trainSrc = parameters.get("station_code_name")
+    if trainSrc is None:
+        return None
+    return trainSrc[0]
+
+def makeYqlQueryForDes(req):
+    result = req.get("result")
+    parameters = result.get("parameters")
+    trainSrc = parameters.get("station_code_name")
+    if trainSrc is None:
+        return None
+    return trainSrc[1]
+
+
+def makeYqlQueryForDat(req):
+    result = req.get("result")
+    parameters = result.get("parameters")
+    traindate = parameters.get("date")
+    if traindate is None:
+        return None
+    return traindate
 
 # ------------------------------------extra function of weather project for referencing---------------------------------------------------
 
