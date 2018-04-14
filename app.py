@@ -187,7 +187,7 @@ def makeWebhookResult4(data):
 def makeYqlQuery(req):
     result = req.get("result")
     parameters = result.get("parameters")
-    trainnum = parameters.get("Train")
+    trainnum = parameters.get("Train_number")
     if trainnum is None:
         return None
     return trainnum
