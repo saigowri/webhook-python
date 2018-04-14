@@ -34,6 +34,7 @@ from flask import make_response
 # Flask app should start in global layout
 app = Flask(__name__)
 
+#----------------------------------------Main Entry Point---------------------------------------------------
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
@@ -56,49 +57,8 @@ def webhook():
     return r
 
 
-def processTrainNumber(req):
-    if req.get("result").get("action") != "Tr_Name_to_Code":
-        return {}
-    baseurl = "https://api.railwayapi.com/v2/suggest-train/train/"
-    remain = "/apikey/e5hkcdzqsj"
-    yql_query = makeYqlQueryForTrain(req)
-    if yql_query is None:
-        return {}
-    yql_url = baseurl +yql_query+ remain
-    result = urlopen(yql_url).read()
-    data = json.loads(result)
-    res = makeWebhookResult4(data)
-    return res
 
-def processCode(req):
-    if req.get("result").get("action") != "stationCode":
-        return {}
-    baseurl = "https://api.railwayapi.com/v2/suggest-station/name/"
-    remain = "/apikey/e5hkcdzqsj"
-    yql_query = makeQueryForPlace(req)
-    if yql_query is None:
-        return {}
-    yql_url = baseurl + yql_query + remain
-    result = urlopen(yql_url).read()
-    data = json.loads(result)
-    res = makeWebhookResult3(data)
-    return res
-
-
-def processRoute(req):
-    if req.get("result").get("action") != "trainRoute":
-        return {}
-    baseurl = "https://api.railwayapi.com/v2/route/train/"
-    remain = "/apikey/e5hkcdzqsj"
-    yql_query = makeYqlQuery(req)
-    if yql_query is None:
-        return {}
-    yql_url = baseurl + yql_query + remain
-    result = urlopen(yql_url).read()
-    data = json.loads(result)
-    res = makeWebhookResult2(data)
-    return res
-
+#----------------------------------------processing Funtions---------------------------------------------------
 
 def processRequest(req):
     if req.get("result").get("action") != "trainStatus":
@@ -119,6 +79,50 @@ def processRequest(req):
     res = makeWebhookResult1(data)
     return res
 
+def processRoute(req):
+    if req.get("result").get("action") != "trainRoute":
+        return {}
+    baseurl = "https://api.railwayapi.com/v2/route/train/"
+    remain = "/apikey/e5hkcdzqsj"
+    yql_query = makeYqlQuery(req)
+    if yql_query is None:
+        return {}
+    yql_url = baseurl + yql_query + remain
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    res = makeWebhookResult2(data)
+    return res
+
+def processCode(req):
+    if req.get("result").get("action") != "stationCode":
+        return {}
+    baseurl = "https://api.railwayapi.com/v2/suggest-station/name/"
+    remain = "/apikey/e5hkcdzqsj"
+    yql_query = makeQueryForPlace(req)
+    if yql_query is None:
+        return {}
+    yql_url = baseurl + yql_query + remain
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    res = makeWebhookResult3(data)
+    return res
+
+def processTrainNumber(req):
+    if req.get("result").get("action") != "Tr_Name_to_Code":
+        return {}
+    baseurl = "https://api.railwayapi.com/v2/suggest-train/train/"
+    remain = "/apikey/e5hkcdzqsj"
+    yql_query = makeYqlQueryForTrain(req)
+    if yql_query is None:
+        return {}
+    yql_url = baseurl +yql_query+ remain
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    res = makeWebhookResult4(data)
+    return res
+
+
+# ----------------------------------------json data extraction functions---------------------------------------------------
 
 def makeWebhookResult1(data):
 
@@ -160,6 +164,7 @@ def makeWebhookResult3(data):
             }
     return reply
 
+
 def makeWebhookResult4(data):
     msg = []
     speech = ""
@@ -174,6 +179,10 @@ def makeWebhookResult4(data):
             "source": "webhook-dm"
             }
     return reply
+
+# ------------------------------------query parameter extracting functions---------------------------------------------------
+
+
 
 def makeYqlQuery(req):
     result = req.get("result")
@@ -201,6 +210,9 @@ def makeQueryForPlace(req):
     if trainnum2:
         return trainnum2
     return {}
+
+
+# ------------------------------------extra function of weather project for referencing---------------------------------------------------
 
 
 def makeWebhookResult(data):
