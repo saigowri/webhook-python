@@ -186,10 +186,10 @@ def makeYqlQuery(req):
 def makeYqlQueryForTrain(req):
     result = req.get("result")
     parameters = result.get("parameters")
-    trainnum = parameters.get("Train")
-    if trainnum is None:
+    trainname = parameters.get("Train_name")
+    if trainname is None:
         return None
-    return trainnum
+    return trainname
 
 def makeQueryForPlace(req):
     result = req.get("result")
