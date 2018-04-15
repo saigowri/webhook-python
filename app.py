@@ -129,15 +129,17 @@ def processTrainBtwnStations(req):
         return {}
     baseurl = "https://api.railwayapi.com/v2/between/source/"
     remain = "/apikey/e5hkcdzqsj"
-    yql_query_src  = makeYqlQueryForSrc(req)
-    if yql_query_src is None:
-        return {}
-    yql_query_des  = makeYqlQueryForDes(req)
-    if yql_query_des is None:
-        return {}
+#     yql_query_src  = makeYqlQueryForSrc(req)
+#     if yql_query_src is None:
+#         return {}
+#     yql_query_des  = makeYqlQueryForDes(req)
+#     if yql_query_des is None:
+#         return {}
     yql_query_date  = makeYqlQueryForDat(req)
     if yql_query_date is None:
         return {}
+    yql_query_src = "gkp"
+    yql_query_des = "jat"
     yql_url = baseurl + yql_query_src +"/dest/"+ yql_query_des +"/date/"+ date + remain
     result = urlopen(yql_url).read()
     data = json.loads(result)
