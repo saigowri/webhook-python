@@ -135,14 +135,12 @@ def processTrainBtwnStations(req):
     yql_query_des  = makeYqlQueryForDes(req)
     if yql_query_des is None:
         return {}
-#     yql_query_date  = makeYqlQueryForDat(req)
-#     if yql_query_date is None:
-#         return {}
+    yql_query_date  = makeYqlQueryForDat(req)
+    if yql_query_date is None:
+        return {}
     p = yql_query_src
     q = "/dest/" + yql_query_des
-    dat = "17-04-2018"
-    date = "/date/" + dat
-#     yql_url = baseurl +yql_query_src+"/dest/"+yql_query_des+"/date/"+date+ remain
+    date = "/date/" + yql_query_date
     x = p + q + date
     yql_url = baseurl + x + remain
     result = urlopen(yql_url).read()
