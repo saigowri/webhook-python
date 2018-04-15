@@ -141,7 +141,7 @@ def processTrainBtwnStations(req):
 #     yql_query_src = "gkp"
 #     yql_query_des = "jat"
 #     date = "17-04-2018"
-    yql_url = baseurl +"gkp/dest/jat/date/17-04-2018"+ remain
+    yql_url = baseurl +"gkp"+"/dest/"+"jat"+"/date/"+"17-04-2018"+ remain
     result = urlopen(yql_url).read()
     data = json.loads(result)
     res = makeWebhookResultForBtwnStations(data)
