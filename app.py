@@ -137,7 +137,7 @@ def processTrainBtwnStations(req):
         return {}
     yql_query_date  = makeYqlQueryForDat(req)
     if yql_query_date is None:
-        return {}
+        yql_query_date = "18-04-2018"
     p = yql_query_src
     q = "/dest/" + yql_query_des
     date = "/date/" + yql_query_date
@@ -210,6 +210,8 @@ def makeWebhookResult4(data):
 def makeWebhookResultForBtwnStations(data):
     msg = []
     speech = ""
+    if(data['trains']==[])
+        return "No Trains on that route"
     for train in data['trains']:
         speech = speech + train['name'] + ", Starts at "+ train['src_departure_time'] +", Reaches at "+ train['dest_arrival_time'] +","
         msg.append( train['name'] +", Starts at "+ train['src_departure_time'] +", Reaches at "+ train['dest_arrival_time'])
