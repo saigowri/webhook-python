@@ -147,7 +147,7 @@ def processTrainBtwnStations(req):
     return res
 
 def processTrainFare(req):
-    if req.get("result").get("action") != "train_btwn_stations":
+    if req.get("result").get("action") != "processTrainFare":
         return {}
     baseurl = "https://api.railwayapi.com/v2/fare/train/"
     remain = "/apikey/e5hkcdzqsj"
