@@ -262,7 +262,7 @@ def makeYqlQueryForSrc(req):
 def makeYqlQueryForDes(req):
     result = req.get("result")
     parameters = result.get("parameters")
-    trainSrc = parameters.get("station_code_name1")
+    trainSrc = parameters.get("station_code_name")
     if trainSrc is None:
         return None
     return trainSrc[1]
