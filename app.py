@@ -51,7 +51,9 @@ def webhook():
     if req.get("result").get("action") == "Tr_Name_to_Code":
         res = processTrainNumber(req)
     if req.get("result").get("action") == "train_btwn_stations":
-        res = processTrainBtwnStations(req)    
+        res = processTrainBtwnStations(req)
+    if req.get("result").get("action") == "Train_fare":
+        res = processTrainFare(req)
     res = json.dumps(res, indent=4)
     # print(res)
     r = make_response(res)
@@ -139,6 +141,56 @@ def processTrainBtwnStations(req):
     date = "/date/" + yql_query_date
     x = p + q + date
     yql_url = baseurl + x + remain
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    res = makeWebhookResultForBtwnStations(data)
+    return res
+
+def processTrainFare(req):
+    if req.get("result").get("action") != "train_btwn_stations":
+        return {}
+    baseurl = "https://api.railwayapi.com/v2/fare/train/"
+    remain = "/apikey/e5hkcdzqsj"
+    yql_query_Trnum  = makeYqlQuery(req)
+    if yql_query_Trnum is None:
+        return {}
+    p = yql_query_Trnum
+    
+    yql_query_src  = makeYqlQueryForSrc(req)
+    if yql_query_src is None:
+        return {}
+    q = "/source/"+ yql_query_src
+    
+    yql_query_des  = makeYqlQueryForDes(req)
+    if yql_query_des is None:
+        return {}
+    r = "/dest/"+ yql_query_des
+    
+    yql_query_date  = makeYqlQueryForDat(req)
+    if yql_query_date is None:
+        yql_query_date = "18-04-2018"
+    s = "/date/"+yql_query_date
+    
+    yql_query_class  = makeYqlQueryForClass(req)
+    if yql_query_class is None:
+        return {}
+    t = "/pref/"+yql_query_class
+    
+    yql_query_quota  = makeYqlQueryForQuota(req)
+    if yql_query_quota is None:
+        return {}
+    u = "quota/"+ yql_query_quota
+    
+    yql_query_age  = makeYqlQueryForAge(req)
+    if yql_query_age is None:
+        return {}
+    v = "age/" + yql_query_age 
+    
+    w = p+q+r
+    x = w+v+t
+    y = x+u+s
+
+    yql_url = baseurl + y + remain
     result = urlopen(yql_url).read()
     data = json.loads(result)
     res = makeWebhookResultForBtwnStations(data)
@@ -275,6 +327,30 @@ def makeYqlQueryForDat(req):
     if traindate is None:
         return None
     return traindate
+
+def makeYqlQueryForClass(req):
+    result = req.get("result")
+    parameters = result.get("parameters")
+    traindclass = parameters.get("class")
+    if traindclass is None:
+        return None
+    return traindclass
+
+def makeYqlQueryForQuota(req):
+    result = req.get("result")
+    parameters = result.get("parameters")
+    trainquota = parameters.get("quota")
+    if trainquota is None:
+        return None
+    return trainquota
+
+def makeYqlQueryForAge(req):
+    result = req.get("result")
+    parameters = result.get("parameters")
+    age = parameters.get("age")
+    if age is None:
+        return None
+    return age
 
 # ------------------------------------extra function of weather project for referencing---------------------------------------------------
 
