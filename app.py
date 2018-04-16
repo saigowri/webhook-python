@@ -151,17 +151,19 @@ def processTrainFare(req):
         return {}
     baseurl = "https://api.railwayapi.com/v2/fare/train/"
     remain = "/age/18/pref/SL/quota/PT/date/18-04-2018/apikey/3gleroll53"
-    yql_query_Trnum  = makeYqlQuery(req)
+     yql_query_Trnum  = makeYqlQuery(req)
     if yql_query_Trnum is None:
         return {}
     p = yql_query_Trnum
 #     p = "12555"
-    yql_query_src  = makeYqlQueryForSrc(req)
+#     yql_query_src  = makeYqlQueryForSrc(req)
+    yql_query_src = "gkp"
     if yql_query_src is None:
         return {}
     q = "/source/"+ yql_query_src
 #     q= "/source/gkp"
-    yql_query_des  = makeYqlQueryForDes(req)
+#     yql_query_des  = makeYqlQueryForDes(req)
+    yql_query_des = "ndls"
     if yql_query_des is None:
         return {}
     r = "/dest/"+ yql_query_des
