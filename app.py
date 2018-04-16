@@ -69,7 +69,7 @@ def processRequest(req):
         return {}
     baseurl = "https://api.railwayapi.com/v2/live/train/" 
     today = datetime.date.today().strftime("%d-%m-%Y")
-    remain = "/date/"+today+"/apikey/0v40s8kpt1"
+    remain = "/date/"+today+"/apikey/3gleroll53"
     yql_query = makeYqlQuery(req)
     if yql_query is None:
         return {}
@@ -83,7 +83,7 @@ def processRoute(req):
     if req.get("result").get("action") != "trainRoute":
         return {}
     baseurl = "https://api.railwayapi.com/v2/route/train/"
-    remain = "/apikey/0v40s8kpt1"
+    remain = "/apikey/3gleroll53"
     yql_query = makeYqlQuery(req)
     if yql_query is None:
         return {}
@@ -97,7 +97,7 @@ def processCode(req):
     if req.get("result").get("action") != "stationCode":
         return {}
     baseurl = "https://api.railwayapi.com/v2/suggest-station/name/"
-    remain = "/apikey/e5hkcdzqsj"
+    remain = "/apikey/3gleroll53"
     yql_query = makeQueryForPlace(req)
     if yql_query is None:
         return {}
@@ -111,7 +111,7 @@ def processTrainNumber(req):
     if req.get("result").get("action") != "Tr_Name_to_Code":
         return {}
     baseurl = "https://api.railwayapi.com/v2/suggest-train/train/"
-    remain = "/apikey/e5hkcdzqsj"
+    remain = "/apikey/3gleroll53"
     yql_query = makeYqlQueryForTrain(req)
     if yql_query is None:
         return {}
@@ -126,7 +126,7 @@ def processTrainBtwnStations(req):
     if req.get("result").get("action") != "train_btwn_stations":
         return {}
     baseurl = "https://api.railwayapi.com/v2/between/source/"
-    remain = "/apikey/e5hkcdzqsj"
+    remain = "/apikey/3gleroll53"
     yql_query_src  = makeYqlQueryForSrc(req)
     if yql_query_src is None:
         return {}
@@ -150,7 +150,7 @@ def processTrainFare(req):
     if req.get("result").get("action") != "Train_fare":
         return {}
     baseurl = "https://api.railwayapi.com/v2/fare/train/"
-    remain = "/apikey/e5hkcdzqsj"
+    remain = "/apikey/3gleroll53"
     yql_query_Trnum  = makeYqlQuery(req)
     if yql_query_Trnum is None:
         return {}
