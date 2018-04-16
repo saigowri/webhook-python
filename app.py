@@ -199,30 +199,18 @@ def processTrainFare(req):
     return res
 # ----------------------------------------json data extraction functions---------------------------------------------------
 
-# def makeWebhookResult1(data):
-
-#     speech = data.get('position')
-#     return {
-#         "speech": speech,
-#         "displayText": speech,
-#         # "data": data,
-#         # "contextOut": [],
-#         "source": "webhook-dm"
-#     }
-
 def makeWebhookResult1(data):
-     msg = []
-    speech = ""
-    msg.append(data['position']
-    messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
-    reply = {
-            "speech": speech,
-            "displayText": speech,
-            "messages": messages,
-            "source": "webhook-dm"
-            }
-    return reply
-               
+
+    speech = data.get('position')
+    return {
+        "speech": speech,
+        "displayText": speech,
+        # "data": data,
+        # "contextOut": [],
+        "source": "webhook-dm"
+    }
+
+
 def makeWebhookResult2(data):
 
 #     speech = data.get('position')
