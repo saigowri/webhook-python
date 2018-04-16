@@ -38,16 +38,18 @@ app = Flask(__name__)
 @app.route('/webhook', methods=['POST'])
 def webhook():
     req = request.get_json(silent=True, force=True)
-
+    action = req.get("result").get("action")
+    #baseurl = "https://api.railwayapi.com/v2/"
+    #apikey = "/apikey/3gleroll53"
     print("Request:")
     print(json.dumps(req, indent=4))
-    if req.get("result").get("action") == "trainStatus":
+    if action == "trainStatus":
         res = processRequest(req)
-    if req.get("result").get("action") == "trainRoute":
+    else if action == "trainRoute":
         res = processRoute(req)
-    if req.get("result").get("action") == "stationCode":
+    else if action == "stationCode":
         res = processCode(req)
-    if req.get("result").get("action") == "Tr_Name_to_Code":
+    else if action == "Tr_Name_to_Code":
         res = processTrainNumber(req)
     res = json.dumps(res, indent=4)
     # print(res)
