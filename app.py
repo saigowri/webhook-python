@@ -67,17 +67,18 @@ def webhook():
 def processRequest(req):
     if req.get("result").get("action") != "trainStatus":
         return {}
-    baseurl = "https://api.railwayapi.com/v2/live/train/" 
-    today = datetime.date.today().strftime("%d-%m-%Y")
-    remain = "/date/"+today+"/apikey/3gleroll53"
-    yql_query = makeYqlQuery(req)
-    if yql_query is None:
-        return {}
-    yql_url = baseurl + yql_query + remain
-    result = urlopen(yql_url).read()
-    data = json.loads(result)
-    res = makeWebhookResult1(data)
-    return res
+    return "Something"
+#     baseurl = "https://api.railwayapi.com/v2/live/train/" 
+#     today = datetime.date.today().strftime("%d-%m-%Y")
+#     remain = "/date/"+today+"/apikey/3gleroll53"
+#     yql_query = makeYqlQuery(req)
+#     if yql_query is None:
+#         return {}
+#     yql_url = baseurl + yql_query + remain
+#     result = urlopen(yql_url).read()
+#     data = json.loads(result)
+#     res = makeWebhookResult1(data)
+#     return res
 
 def processRoute(req):
     if req.get("result").get("action") != "trainRoute":
