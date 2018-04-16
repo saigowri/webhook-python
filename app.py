@@ -60,7 +60,7 @@ def processCode(req):
     if req.get("result").get("action") != "stationCode":
         return {}
     baseurl = "ttps://api.railwayapi.com/v2/suggest-station/name/"
-    remain = "/apikey/e5hkcdzqsj"
+    remain = "/apikey/3gleroll53"
     yql_query = makeYqlQuery(req)
     if yql_query is None:
         return {}
@@ -75,7 +75,7 @@ def processCode(req):
 #     baseurl = "https://api.railwayapi.com/v2/name-to-code/station/"
 #     remain = "/apikey/e5hkcdzqsj"
     baseurl = "https://api.railwayapi.com/v2/suggest-station/name/"
-    remain = "/apikey/e5hkcdzqsj"
+    remain = "/apikey/3gleroll53"
     yql_query = makeQueryForPlace(req)
     if yql_query is None:
         return {}
@@ -90,7 +90,7 @@ def processRoute(req):
     if req.get("result").get("action") != "trainRoute":
         return {}
     baseurl = "https://api.railwayapi.com/v2/route/train/"
-    remain = "/apikey/e5hkcdzqsj"
+    remain = "/apikey/3gleroll53"
     yql_query = makeYqlQuery(req)
     if yql_query is None:
         return {}
@@ -110,7 +110,7 @@ def processRequest(req):
     month = i.month 
     year = i.year
     today = "10-04-2018"
-    remain = "/date/"+today+"/apikey/e5hkcdzqsj/"
+    remain = "/date/"+today+"/apikey/3gleroll53/"
     yql_query = makeYqlQuery(req)
     if yql_query is None:
         return {}
