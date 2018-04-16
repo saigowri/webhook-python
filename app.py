@@ -154,45 +154,45 @@ def processTrainFare(req):
     yql_query_Trnum  = makeYqlQuery(req)
     if yql_query_Trnum is None:
         return {}
-#     p = yql_query_Trnum
-    p = "12555"
+    p = yql_query_Trnum
+#     p = "12555"
     yql_query_src  = makeYqlQueryForSrc(req)
     if yql_query_src is None:
         return {}
-#     q = "/source/"+ yql_query_src
-    q= "/source/gkp"
+    q = "/source/"+ yql_query_src
+#     q= "/source/gkp"
     yql_query_des  = makeYqlQueryForDes(req)
     if yql_query_des is None:
         return {}
-#     r = "/dest/"+ yql_query_des
-    r = "/dest/ndls"
+    r = "/dest/"+ yql_query_des
+#     r = "/dest/ndls"
     yql_query_date  = makeYqlQueryForDat(req)
     if yql_query_date is None:
-        yql_query_date = "18-04-2018"
+        yql_query_date = "17-04-2018"
     s = "/date/"+yql_query_date
     
     yql_query_class  = makeYqlQueryForClass(req)
     if yql_query_class is None:
         return {}
-#     t = "/pref/"+yql_query_class
-    t = "/pref/SL"
+    t = "/pref/"+yql_query_class
+#     t = "/pref/SL"
     yql_query_quota  = makeYqlQueryForQuota(req)
     if yql_query_quota is None:
         return {}
-#     u = "quota/"+ yql_query_quota
-    u = "quota/PT"
+    u = "quota/"+ yql_query_quota
+#     u = "quota/PT"
     yql_query_age  = makeYqlQueryForAge(req)
     if yql_query_age is None:
         return {}
-#     v = "age/" + yql_query_age 
-    v = "age/18"
+    v = "age/" + yql_query_age 
+#     v = "age/18"
     
     w = p+q+r
     x = w+v+t
     y = x+u+s
 
-#     yql_url = baseurl + y + remain
-    yql_url = "https://api.railwayapi.com/v2/fare/train/12555/source/gkp/dest/ndls/age/18/pref/SL/quota/PT/date/18-04-2018/apikey/3gleroll53"
+    yql_url = baseurl + y + remain
+#     yql_url = "https://api.railwayapi.com/v2/fare/train/12555/source/gkp/dest/ndls/age/18/pref/SL/quota/PT/date/18-04-2018/apikey/3gleroll53"
     result = urlopen(yql_url).read()
     data = json.loads(result)
     res = makeWebhookResultForFARE(data)
