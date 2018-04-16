@@ -146,17 +146,17 @@ def processTrainBtwnStations(req):
     res = makeWebhookResultForBtwnStations(data)
     return res
 
-# def processTrainFare(req):
-#     if req.get("result").get("action") != "Train_fare":
-#         return {}
-#     baseurl = "https://api.railwayapi.com/v2/fare/train/"
-#     remain = "/age/18/pref/SL/quota/PT/date/18-04-2018/apikey/3gleroll53"
-#      yql_query_Trnum  = makeYqlQuery(req)
-#     if yql_query_Trnum is None:
-#         return {}
-#     p = yql_query_Trnum
-# #     p = "12555"
-# #     yql_query_src  = makeYqlQueryForSrc(req)
+def processTrainFare(req):
+    if req.get("result").get("action") != "Train_fare":
+        return {}
+    baseurl = "https://api.railwayapi.com/v2/fare/train/"
+    remain = "/age/18/pref/SL/quota/PT/date/18-04-2018/apikey/3gleroll53"
+     yql_query_Trnum  = makeYqlQuery(req)
+    if yql_query_Trnum is None:
+        return {}
+    p = yql_query_Trnum
+#     p = "12555"
+#     yql_query_src  = makeYqlQueryForSrc(req)
 #     yql_query_src = "gkp"
 #     if yql_query_src is None:
 #         return {}
@@ -187,18 +187,18 @@ def processTrainBtwnStations(req):
 #     if yql_query_age is None:
 #         return {}
 #     v = "age/" + yql_query_age 
-# #     v = "age/18"
+#     v = "age/18"
     
 #     w = p+q+r
-# #     x = w+v+t
-# #     y = x+u+s
+#     x = w+v+t
+#     y = x+u+s
 
-#     yql_url = baseurl + w + remain
-# #     yql_url = "https://api.railwayapi.com/v2/fare/train/12555/source/gkp/dest/ndls/age/18/pref/SL/quota/PT/date/18-04-2018/apikey/3gleroll53"
-#     result = urlopen(yql_url).read()
-#     data = json.loads(result)
-#     res = makeWebhookResultForFARE(data)
-#     return res
+    yql_url = baseurl + w + remain
+     yql_url = "https://api.railwayapi.com/v2/fare/train/"+p+"/source/gkp/dest/ndls/age/18/pref/SL/quota/PT/date/18-04-2018/apikey/3gleroll53"
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    res = makeWebhookResultForFARE(data)
+    return res
 # ----------------------------------------json data extraction functions---------------------------------------------------
 
 def makeWebhookResult1(data):
