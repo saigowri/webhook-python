@@ -34,8 +34,6 @@ from flask import make_response
 # Flask app should start in global layout
 app = Flask(__name__)
 
-# def change_date_format(dt);
-#     return re.sub(r'(\d{4})-(d{1,2})','\\3-\\2-\\1',dt)
 #----------------------------------------Main Entry Point---------------------------------------------------
 
 @app.route('/webhook', methods=['POST'])
@@ -339,8 +337,7 @@ def makeYqlQueryForDes(req):
 def makeYqlQueryForDat(req):
     result = req.get("result")
     parameters = result.get("parameters")
-     traindate = parameters.get("date")
-#     trdate = change_date_format(traindate)
+    traindate = parameters.get("date")
     if traindate is None:
         return None
     return traindate
