@@ -69,7 +69,7 @@ def processRequest(req):
         return {}
     baseurl = "https://api.railwayapi.com/v2/live/train/" 
     today = datetime.date.today().strftime("%d-%m-%Y")
-    remain = "/date/"+today+"/apikey/e5hkcdzqsj/"
+    remain = "/date/"+today+"/apikey/0v40s8kpt1"
     yql_query = makeYqlQuery(req)
     if yql_query is None:
         return {}
@@ -83,7 +83,7 @@ def processRoute(req):
     if req.get("result").get("action") != "trainRoute":
         return {}
     baseurl = "https://api.railwayapi.com/v2/route/train/"
-    remain = "/apikey/e5hkcdzqsj"
+    remain = "/apikey/0v40s8kpt1"
     yql_query = makeYqlQuery(req)
     if yql_query is None:
         return {}
