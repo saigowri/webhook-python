@@ -254,7 +254,7 @@ def makeQueryForPlace(req):
 def makeYqlQueryForSrc(req):
     result = req.get("result")
     parameters = result.get("parameters")
-    trainSrc = parameters.get("station_code_name1")
+    trainSrc = parameters.get("station_code_name")
     if trainSrc is None:
         return None
     return trainSrc[0]
