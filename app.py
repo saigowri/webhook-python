@@ -38,18 +38,16 @@ app = Flask(__name__)
 @app.route('/webhook', methods=['POST'])
 def webhook():
     req = request.get_json(silent=True, force=True)
-    action = req.get("result").get("action")
-    #baseurl = "https://api.railwayapi.com/v2/"
-    #apikey = "/apikey/3gleroll53"
+
     print("Request:")
     print(json.dumps(req, indent=4))
-    if action == "trainStatus":
+    if req.get("result").get("action") == "trainStatus":
         res = processRequest(req)
-    else if action == "trainRoute":
+    if req.get("result").get("action") == "trainRoute":
         res = processRoute(req)
-    else if action == "stationCode":
+    if req.get("result").get("action") == "stationCode":
         res = processCode(req)
-    else if action == "Tr_Name_to_Code":
+    if req.get("result").get("action") == "Tr_Name_to_Code":
         res = processTrainNumber(req)
     res = json.dumps(res, indent=4)
     # print(res)
@@ -62,7 +60,7 @@ def processCode(req):
     if req.get("result").get("action") != "stationCode":
         return {}
     baseurl = "ttps://api.railwayapi.com/v2/suggest-station/name/"
-    remain = "/apikey/3gleroll53"
+    remain = "/apikey/e5hkcdzqsj"
     yql_query = makeYqlQuery(req)
     if yql_query is None:
         return {}
@@ -77,7 +75,7 @@ def processCode(req):
 #     baseurl = "https://api.railwayapi.com/v2/name-to-code/station/"
 #     remain = "/apikey/e5hkcdzqsj"
     baseurl = "https://api.railwayapi.com/v2/suggest-station/name/"
-    remain = "/apikey/3gleroll53"
+    remain = "/apikey/e5hkcdzqsj"
     yql_query = makeQueryForPlace(req)
     if yql_query is None:
         return {}
@@ -92,7 +90,7 @@ def processRoute(req):
     if req.get("result").get("action") != "trainRoute":
         return {}
     baseurl = "https://api.railwayapi.com/v2/route/train/"
-    remain = "/apikey/3gleroll53"
+    remain = "/apikey/e5hkcdzqsj"
     yql_query = makeYqlQuery(req)
     if yql_query is None:
         return {}
@@ -112,7 +110,7 @@ def processRequest(req):
     month = i.month 
     year = i.year
     today = "10-04-2018"
-    remain = "/date/"+today+"/apikey/3gleroll53/"
+    remain = "/date/"+today+"/apikey/e5hkcdzqsj/"
     yql_query = makeYqlQuery(req)
     if yql_query is None:
         return {}
