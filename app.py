@@ -193,7 +193,7 @@ def processTrainFare(req):
 #     x = w+v+t
 #     y = x+u+s
 
-    yql_url = baseurl + w + remain
+#     yql_url = baseurl + w + remain
      yql_url = "https://api.railwayapi.com/v2/fare/train/"+p+"/source/gkp/dest/ndls/age/18/pref/SL/quota/PT/date/18-04-2018/apikey/3gleroll53"
     result = urlopen(yql_url).read()
     data = json.loads(result)
