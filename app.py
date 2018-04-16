@@ -194,7 +194,7 @@ def processTrainFare(req):
     yql_url = baseurl + y + remain
     result = urlopen(yql_url).read()
     data = json.loads(result)
-    res = makeWebhookResultForBtwnStations(data)
+    res = makeWebhookResultForFARE(data)
     return res
 # ----------------------------------------json data extraction functions---------------------------------------------------
 
@@ -272,6 +272,16 @@ def makeWebhookResultForBtwnStations(data):
             "source": "webhook-dm"
             }
     return reply
+
+def makeWebhookResultForFARE(data):
+    speech = data.get('fare')
+    return {
+        "speech": speech,
+        "displayText": speech,
+        # "data": data,
+        # "contextOut": [],
+        "source": "webhook-dm"
+    }
 # ------------------------------------query parameter extracting functions---------------------------------------------------
 
 
