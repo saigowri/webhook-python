@@ -146,14 +146,14 @@ def processTrainBtwnStations(req):
     res = makeWebhookResultForBtwnStations(data)
     return res
 
- def processTrainFare(req):
-    if req.get("result").get("action") != "Train_fare":
-        return {}
-    yql_url ="https://api.railwayapi.com/v2/fare/train/12555/source/gkp/dest/ndls/age/18/pref/SL/quota/PT/date/18-04-2018/apikey/3gleroll53"
-    result = urlopen(yql_url).read()
-    data = json.loads(result)
-    res = makeWebhookResultForFARE(data)
-    return res
+#  def processTrainFare(req):
+#     if req.get("result").get("action") != "Train_fare":
+#         return {}
+#     yql_url ="https://api.railwayapi.com/v2/fare/train/12555/source/gkp/dest/ndls/age/18/pref/SL/quota/PT/date/18-04-2018/apikey/3gleroll53"
+#     result = urlopen(yql_url).read()
+#     data = json.loads(result)
+#     res = makeWebhookResultForFARE(data)
+#     return res
 #     baseurl = "https://api.railwayapi.com/v2/fare/train/"
 
 # #     remain = "/age/18/pref/SL/quota/PT/date/18-04-2018/apikey/3gleroll53"
