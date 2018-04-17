@@ -152,24 +152,9 @@ def processTrainFare(req):
         return {}
     baseurl = "https://api.railwayapi.com/v2/fare/train/"
     remain = "/apikey/3gleroll53"
-    yql_query_train = makeYqlQueryForTrain(req)
-    if yql_query_train is None:
-        return {}
-    yql_query_src  = makeYqlQueryForSrc(req)
-    if yql_query_src is None:
-        return {}
-    yql_query_des  = makeYqlQueryForDes(req)
-    if yql_query_des is None:
-        return {}
-    yql_query_date  = makeYqlQueryForDat(req)
-    if yql_query_date is None:
-        yql_query_date = "18-04-2018"
-    w = yql_query_train 
-    x = "/source/" + yql_query_src
-    q = "/dest/" + yql_query_des
-    a = w + x + q
+    x = "12555/source/gkp/dest/ndls" 
     date = "/age/18/pref/SL/quota/PT/date/" + yql_query_date
-    f = a + date
+    f = x + date
     yql_url = baseurl + f + remain
     result = urlopen(yql_url).read()
     data = json.loads(result)
