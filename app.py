@@ -157,7 +157,7 @@ def processTrainFare(req):
         yql_query_date = "18-04-2018"
     yql_query_src  = "gkp"
     yql_query_des  = "ndls"
-    yql_query_train = makeYqlQueryForTrain(req)
+    yql_query_train = makeYqlQuery(req)
     if yql_query_train is None:
         return {}
     x = "/source/" + yql_query_src
