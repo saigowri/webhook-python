@@ -150,9 +150,13 @@ def processTrainBtwnStations(req):
 def processTrainFare(req):
     if req.get("result").get("action") != "TrainFare":
         return {}
-    baseurl = "https://api.railwayapi.com/v2/fare/train/12555/source/gkp/dest/ndls/age/18/pref/SL/quota/PT/date/18-04-2018"
+    baseurl = "https://api.railwayapi.com/v2/fare/train/12555/source/gkp/dest/ndls/age/18/pref/SL/quota/PT"
     remain = "/apikey/3gleroll53"
-    yql_url = baseurl + remain
+    yql_query_date  = makeYqlQueryForDat(req)
+    if yql_query_date is None:
+        yql_query_date = "18-04-2018"
+    date = "/date/" + yql_query_date
+    yql_url = baseurl + date + remain
     result = urlopen(yql_url).read()
     data = json.loads(result)
     res = makeWebhookResultForFARE(data)
