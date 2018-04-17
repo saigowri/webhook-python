@@ -155,7 +155,12 @@ def processTrainFare(req):
     yql_query_date  = makeYqlQueryForDat(req)
     if yql_query_date is None:
         yql_query_date = "18-04-2018"
-    x = "12555/source/gkp/dest/ndls" 
+    yql_query_src  = makeYqlQueryForSrc(req)
+    yql_query_des  = makeYqlQueryForDes(req)
+    yql_query_train = makeYqlQueryForTrain(req)
+    
+    x = yql_query_train+"/source/" 
+    y = yql_query_src+"/dest/"+yql_query_des
     date = "/age/18/pref/SL/quota/PT/date/" + yql_query_date
     f = x + date
     yql_url = baseurl + f + remain
