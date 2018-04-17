@@ -165,8 +165,14 @@ def processTrainFare(req):
     if yql_query_train is None:
         return {}
     age  = makeYqlQueryForAge(req)
+    if age is None:
+        return {}
     pref = makeYqlQueryForClass(req)
+    if pref is None:
+        return {}
     quota = makeYqlQueryForQuota(req)
+    if quota is None:
+        return {}
     x = "/source/" + yql_query_src
     y = "/dest/" + yql_query_des
     z = yql_query_train + x + y
