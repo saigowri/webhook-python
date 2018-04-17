@@ -162,7 +162,7 @@ def processTrainFare(req):
     x = yql_query_train+"/source/" 
     y = yql_query_src+"/dest/"+yql_query_des
     date = "/age/18/pref/SL/quota/PT/date/" + yql_query_date
-    f = x + date
+    f = x + y + date
     yql_url = baseurl + f + remain
     result = urlopen(yql_url).read()
     data = json.loads(result)
