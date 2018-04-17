@@ -158,11 +158,11 @@ def processTrainFare(req):
     yql_query_src  = makeYqlQueryForSrc(req)
     yql_query_des  = makeYqlQueryForDes(req)
     yql_query_train = makeYqlQueryForTrain(req)
-    
-    x = yql_query_train+"/source/" 
-    y = yql_query_src+"/dest/"+yql_query_des
+    x = "/source/" + yql_query_src
+    y = "/dest/" + yql_query_des
+    z = yql_query_train + x + y
     date = "/age/18/pref/SL/quota/PT/date/" + yql_query_date
-    f = x + y + date
+    f = z + date
     yql_url = baseurl + f + remain
     result = urlopen(yql_url).read()
     data = json.loads(result)
