@@ -164,11 +164,18 @@ def processTrainFare(req):
     yql_query_train = makeYqlQuery(req)
     if yql_query_train is None:
         return {}
+    age  = makeYqlQueryForAge(req)
+    pref = makeYqlQueryForClass(req)
+    quota = makeYqlQueryForQuota(req)
     x = "/source/" + yql_query_src
     y = "/dest/" + yql_query_des
     z = yql_query_train + x + y
-    date = "/age/18/pref/SL/quota/PT/date/" + yql_query_date
-    f = z + date
+    m = "/age/"+ age
+    n = "/pref/"+ pref
+    o = "/quota/"+ quota
+    r = m + n + o
+    date = "/date/" + yql_query_date
+    f = z + r + date
     yql_url = baseurl + f + remain
     result = urlopen(yql_url).read()
     data = json.loads(result)
