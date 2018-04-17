@@ -165,10 +165,10 @@ def processTrainFare(req):
     if yql_query_date is None:
         yql_query_date = "18-04-2018"
     w = yql_query_train 
-    x = "/source/"+yql_query_src
+    x = "/source/" + yql_query_src
     q = "/dest/" + yql_query_des
     a = w + x + q
-    date = "age/18/pref/SL/quota/PT/date/" + yql_query_date
+    date = "/age/18/pref/SL/quota/PT/date/" + yql_query_date
     f = a + date
     yql_url = baseurl + f + remain
     result = urlopen(yql_url).read()
