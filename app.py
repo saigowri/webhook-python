@@ -152,6 +152,9 @@ def processTrainFare(req):
         return {}
     baseurl = "https://api.railwayapi.com/v2/fare/train/"
     remain = "/apikey/3gleroll53"
+    yql_query_date  = makeYqlQueryForDat(req)
+    if yql_query_date is None:
+        yql_query_date = "18-04-2018"
     x = "12555/source/gkp/dest/ndls" 
     date = "/age/18/pref/SL/quota/PT/date/" + yql_query_date
     f = x + date
