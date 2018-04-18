@@ -54,9 +54,9 @@ def webhook():
         res = processTrainBtwnStations(req)
     if req.get("result").get("action") == "TrainFare":
         res = processTrainFare(req)
-    if req.get("result").get("action") == "Station_Code_to_Name":
-        res = processStationName(req)   
-    res = json.dumps(res, indent=4)
+#     if req.get("result").get("action") == "Station_Code_to_Name":
+#         res = processStationName(req)   
+#     res = json.dumps(res, indent=4)
     # print(res)
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
@@ -195,19 +195,19 @@ def processTrainFare(req):
     return res
 
 #Station Code to Name
-def processStationName(req):
-    if req.get("result").get("action") != "Station_Code_to_Name":
-        return {}
-    baseurl = "https://api.railwayapi.com/v2/code-to-name/code/"
-    remain = "/apikey/"+apikey
-    yql_query = makeQueryForStationName(req)
-    if yql_query is None:
-        return {}
-    yql_url = baseurl +yql_query+ remain
-    result = urlopen(yql_url).read()
-    data = json.loads(result)
-    res = makeWebhookResultStationName(data)
-    return res
+# def processStationName(req):
+#     if req.get("result").get("action") != "Station_Code_to_Name":
+#         return {}
+#     baseurl = "https://api.railwayapi.com/v2/code-to-name/code/"
+#     remain = "/apikey/"+apikey
+#     yql_query = makeQueryForStationName(req)
+#     if yql_query is None:
+#         return {}
+#     yql_url = baseurl +yql_query+ remain
+#     result = urlopen(yql_url).read()
+#     data = json.loads(result)
+#     res = makeWebhookResultStationName(data)
+#     return res
 
 # ----------------------------------------json data extraction functions---------------------------------------------------
 
@@ -305,7 +305,8 @@ def makeWebhookResultForFARE(data):
         "source": "webhook-dm"
     }
 
-makeWebhookResultStationName
+
+
 # ------------------------------------query parameter extracting functions---------------------------------------------------
 
 
