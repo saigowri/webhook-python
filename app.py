@@ -191,7 +191,7 @@ def processTrainFare(req):
     return res
 
 def processCancelledTrains(req):
-    if req.get("result").get("action") != "CancelledTrains":
+    if req.get("result").get("action") != "cancelledTrain":
         return {}
     baseurl = "https://api.railwayapi.com/v2/cancelled"
     remain = "/apikey/"+apikey
