@@ -223,7 +223,7 @@ def processCancelledTrains(req):
     reply = {
             "speech": speech,
             "displayText": speech,
-            "messages": messages,
+#             "messages": messages,
             "source": "webhook-dm"
             }
     return reply
