@@ -43,7 +43,7 @@ def webhook():
     print("Request:")
     print(json.dumps(req, indent=4))
     if req.get("result").get("action") == "trainStatus":
-        res = processRequest(req)
+        res = processStatus(req)
     if req.get("result").get("action") == "trainRoute":
         res = processRoute(req)
     if req.get("result").get("action") == "stationCode":
@@ -64,7 +64,8 @@ def webhook():
 
 #----------------------------------------processing Funtions---------------------------------------------------
 
-def processRequest(req):
+#Train Status
+def processStatus(req):
     if req.get("result").get("action") != "trainStatus":
         return {}
     baseurl = "https://api.railwayapi.com/v2/live/train/" 
@@ -76,7 +77,7 @@ def processRequest(req):
     yql_url = baseurl + yql_query + remain
     result = urlopen(yql_url).read()
     data = json.loads(result)
-    res = makeWebhookResult1(data)
+    res = makeWebhookResultStatus(data)
     return res
 
 def processRoute(req):
@@ -191,7 +192,7 @@ def processTrainFare(req):
 
 # ----------------------------------------json data extraction functions---------------------------------------------------
 
-def makeWebhookResult1(data):
+def makeWebhookResultStatus(data):
     if not data.get('position'):
         speech = "No such train !!!"
     speech = data.get('position')
