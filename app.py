@@ -299,8 +299,7 @@ def makeWebhookResultForCancelled(data):
     speech = ""
     for train in data['trains']:
 	speech = speech + "123"
-	#speech = speech + train['name'] + ","
-        msg.append( train['name'] +",")
+        msg.append( "123" + ",")
     messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
     reply = {
             "speech": speech,
