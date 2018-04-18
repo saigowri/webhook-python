@@ -240,7 +240,7 @@ def makeWebhookResultCode(data):
     return reply
 
 
-def makeWebhookResult4(data):
+def makeWebhookResultTrain(data):
     msg = []
     speech = ""
     for train in data['trains']:
