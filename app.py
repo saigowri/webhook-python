@@ -135,7 +135,7 @@ def processTrainBtwnStations(req):
         return {}
     yql_query_date  = makeYqlQueryForDat(req)
     if yql_query_date is None:
-        yql_query_date = "18-04-2018"
+        yql_query_date = datetime.date.today().strftime("%d-%m-%Y")
     p = yql_query_src
     q = "/dest/" + yql_query_des
     date = "/date/" + yql_query_date
