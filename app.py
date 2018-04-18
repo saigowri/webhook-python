@@ -80,6 +80,7 @@ def processStatus(req):
     res = makeWebhookResultStatus(data)
     return res
 
+#Train Route
 def processRoute(req):
     if req.get("result").get("action") != "trainRoute":
         return {}
@@ -91,7 +92,7 @@ def processRoute(req):
     yql_url = baseurl + yql_query + remain
     result = urlopen(yql_url).read()
     data = json.loads(result)
-    res = makeWebhookResult2(data)
+    res = makeWebhookResultRoute(data)
     return res
 
 def processCode(req):
@@ -203,7 +204,7 @@ def makeWebhookResultStatus(data):
         # "contextOut": [],
         "source": "webhook-dm"
     }
-def makeWebhookResult2(data):
+def makeWebhookResultRoute(data):
 
 #     speech = data.get('position')
     speech = ""
