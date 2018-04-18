@@ -292,14 +292,19 @@ def makeWebhookResultForFARE(data):
     }
 	
 def makeWebhookResultForCancelled(data):
-	speech = data
-    return {
-        "speech": speech,
-        "displayText": speech,
-        # "data": data,
-        # "contextOut": [],
-        "source": "webhook-dm"
-    }
+	msg = []
+    speech = ""
+    for train in data['trains']:
+        speech = speech + train['name'] + ","
+        msg.append( train['name'] +",")
+    messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
+    reply = {
+            "speech": speech,
+            "displayText": speech,
+            "messages": messages,
+            "source": "webhook-dm"
+            }
+    return reply
 	
 # ------------------------------------query parameter extracting functions---------------------------------------------------
 
