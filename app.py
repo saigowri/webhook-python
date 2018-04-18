@@ -193,18 +193,18 @@ def processTrainFare(req):
 def processCancelledTrains(req):
     if req.get("result").get("action") != "cancelledTrain":
         return {}
-#     baseurl = "https://api.railwayapi.com/v2/cancelled"
-#     remain = "/apikey/"+apikey
-#     yql_query_date  = makeYqlQueryForDat(req)
-#     if yql_query_date is None:
-#         yql_query_date = datetime.date.today().strftime("%d-%m-%Y")
-#     yql_query_trainName = makeYqlQueryForTrain(req)
-#     if yql_query_trainName is None:
-#         return {}
-#     date = "/date/" + yql_query_date
-#     yql_url = "https://api.railwayapi.com/v2/cancelled/date/18-04-2018/apikey/1f8y1ujgm5/"
-#     result = urlopen(yql_url).read()
-#     data = json.loads(result)
+    baseurl = "https://api.railwayapi.com/v2/cancelled"
+    remain = "/apikey/"+apikey
+    yql_query_date  = makeYqlQueryForDat(req)
+    if yql_query_date is None:
+        yql_query_date = datetime.date.today().strftime("%d-%m-%Y")
+    yql_query_trainName = makeYqlQueryForTrain(req)
+    if yql_query_trainName is None:
+        return {}
+    date = "/date/" + yql_query_date
+    yql_url = "https://api.railwayapi.com/v2/cancelled/date/18-04-2018/apikey/1f8y1ujgm5/"
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
     msg = []
 #     speech = ""
 #     flag = 0
@@ -217,9 +217,9 @@ def processCancelledTrains(req):
 #     if flag == 0:
 # 	speech = yql_query_trainName + " is not cancelled on " + yql_query_date
 #         msg.append( yql_query_trainName + " is not cancelled on " + yql_query_date)
-    msg.append("hi")
+    speech = data.get('response_code')
+    msg.append(speech)
     messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
-    speech = "hi"
     reply = {
             "speech": speech,
             "displayText": speech,
