@@ -199,8 +199,8 @@ def processCancelledTrains(req):
     if yql_query_date is None:
         yql_query_date = datetime.date.today().strftime("%d-%m-%Y")
     yql_query_trainName = makeYqlQueryForTrain(req)
-#     if yql_query_trainName is None:
-# 	return {}
+    if yql_query_trainName is None:
+        return {}
     date = "/date/" + yql_query_date
     yql_url = "https://api.railwayapi.com/v2/cancelled/date/18-04-2018/apikey/1f8y1ujgm5/"
     result = urlopen(yql_url).read()
