@@ -199,7 +199,7 @@ def processCancelledTrains(req):
     if yql_query_date is None:
         yql_query_date = datetime.date.today().strftime("%d-%m-%Y")
     date = "/date/" + yql_query_date
-    yql_url = baseurl + date + remain
+    yql_url ="https://api.railwayapi.com/v2/cancelled/date/18-04-2018/apikey/1f8y1ujgm5/"
     result = urlopen(yql_url).read()
     data = json.loads(result)
     res = makeWebhookResultForCancelled(data)
@@ -295,7 +295,7 @@ def makeWebhookResultForFARE(data):
     }
 	
 def makeWebhookResultForCancelled(data):
-	msg = []
+    msg = []
     speech = ""
     for train in data['trains']:
         speech = speech + train['name'] + ","
