@@ -209,7 +209,7 @@ def processCancelledTrains(req):
     speech = ""
     flag = 0
     for train in data['trains']:
-	if trainName == train['name']:
+	if yql_query_trainName == train['name']:
 		speech = train['name'] + " having train number " + train['number'] + " is cancelled on " + date
         	msg.append( train['name'] + " having train number " + train['number'] + " is cancelled on " + date)
 		flag = 1
