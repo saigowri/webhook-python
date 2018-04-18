@@ -259,7 +259,7 @@ def makeWebhookResultForBtwnStations(data):
         msg.append( train['name'] +", Starts at "+ train['src_departure_time'] +", Reaches at "+ train['dest_arrival_time'])
     messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
     reply = {
-            "speech": speech + datetime.datetime.strptime("20-04-2018", '%Y-%m-%d').strftime('%d-%m-%y'),
+            "speech": speech,
             "displayText": speech,
             "messages": messages,
             "source": "webhook-dm"
