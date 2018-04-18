@@ -282,7 +282,8 @@ def makeWebhookResultForBtwnStations(data):
 def makeWebhookResultForFARE(data):
     if not data.get('fare'):
         speech = "No Seat Available !!!"
-    speech = data.get('fare')
+    else
+        speech = data.get('fare')
     return {
         "speech": speech,
         "displayText": speech,
