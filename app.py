@@ -192,10 +192,8 @@ def processTrainFare(req):
 # ----------------------------------------json data extraction functions---------------------------------------------------
 
 def makeWebhookResult1(data):
-
+    speech = "No such train !!!"
     speech = data.get('position')
-    if speech is None:
-        speech = "No such train !!!"
     return {
         "speech": speech,
         "displayText": speech,
