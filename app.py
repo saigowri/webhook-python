@@ -54,6 +54,8 @@ def webhook():
         res = processTrainBtwnStations(req)
     if req.get("result").get("action") == "TrainFare":
         res = processTrainFare(req)
+    if req.get("result").get("action") == "cancelledTrain":
+        res = processCancelledTrains(req)
     res = json.dumps(res, indent=4)
     # print(res)
     r = make_response(res)
