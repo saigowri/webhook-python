@@ -194,7 +194,7 @@ def processTrainFare(req):
 def makeWebhookResult1(data):
 
     speech = data.get('position')
-    if speech == ""
+    if not speech:
         speech = "No such train !!!"
     return {
         "speech": speech,
