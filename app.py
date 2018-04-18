@@ -235,8 +235,8 @@ def processCancelledTrains(req):
 
 def makeWebhookResultStatus(data):
     speech = data.get('position')
-    if not data.get('position'):
-        speech = "Train may be cancelled"
+    if not data.get('position') and data.get('response_code')==210:
+        speech = "Train may be cancelled or is not scheduled to run"
     return {
         "speech": speech,
         "displayText": speech,
