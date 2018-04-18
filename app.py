@@ -234,9 +234,9 @@ def processCancelledTrains(req):
 # ----------------------------------------json data extraction functions---------------------------------------------------
 
 def makeWebhookResultStatus(data):
-    if not data.get('position'):
-        speech = "No such train !!!"
     speech = data.get('position')
+    if not data.get('position'):
+        speech = "Train may be cancelled"
     return {
         "speech": speech,
         "displayText": speech,
