@@ -224,7 +224,7 @@ def makeWebhookResultRoute(data):
 def makeWebhookResultCode(data):
     msg = []
     speech = ""
-    if not data['stations']:
+    if not data['stations'][0]:
         speech = "Sorry, I could not find any stations in the city you mentioned."
         msg.append(speech);
     for station in data['stations']:
