@@ -280,7 +280,7 @@ def makeWebhookResultForBtwnStations(data):
     return reply
 
 def makeWebhookResultForFARE(data):
-    null_string = null
+    null_string = "null"
     if data.get('fare') == null_string:
         speech = "No Seat Available !!!"
     else
