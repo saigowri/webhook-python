@@ -205,7 +205,7 @@ def processCancelledTrains(req):
 #     yql_url = "https://api.railwayapi.com/v2/cancelled/date/18-04-2018/apikey/1f8y1ujgm5/"
 #     result = urlopen(yql_url).read()
 #     data = json.loads(result)
-#     msg = []
+    msg = []
 #     speech = ""
 #     flag = 0
 #     for train in data['trains']:
@@ -217,7 +217,8 @@ def processCancelledTrains(req):
 #     if flag == 0:
 # 	speech = yql_query_trainName + " is not cancelled on " + yql_query_date
 #         msg.append( yql_query_trainName + " is not cancelled on " + yql_query_date)
-#     messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
+    msg.append("hi")
+    messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
     speech = "hi"
     reply = {
             "speech": speech,
