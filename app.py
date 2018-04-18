@@ -330,7 +330,7 @@ def makeYqlQueryForDat(req):
     traindate = parameters.get("date")
     if traindate is None:
         return None
-    return datetime.datetime.strptime(traindate, '%Y-%m-%d').strftime('%d-%m-%y')
+    return datetime.datetime.strptime("20-04-2018", '%Y-%m-%d').strftime('%d-%m-%y')
 
 def makeYqlQueryForClass(req):
     result = req.get("result")
