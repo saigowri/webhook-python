@@ -35,7 +35,7 @@ from flask import make_response
 app = Flask(__name__)
 
 #----------------------------------------Main Entry Point---------------------------------------------------
-
+apikey = "1f8y1ujgm5"
 @app.route('/webhook', methods=['POST'])
 def webhook():
     req = request.get_json(silent=True, force=True)
@@ -69,7 +69,7 @@ def processRequest(req):
         return {}
     baseurl = "https://api.railwayapi.com/v2/live/train/" 
     today = datetime.date.today().strftime("%d-%m-%Y")
-    remain = "/date/"+today+"/apikey/3gleroll53"
+    remain = "/date/"+today+"/apikey/"+apikey
     yql_query = makeYqlQuery(req)
     if yql_query is None:
         return {}
@@ -83,7 +83,7 @@ def processRoute(req):
     if req.get("result").get("action") != "trainRoute":
         return {}
     baseurl = "https://api.railwayapi.com/v2/route/train/"
-    remain = "/apikey/3gleroll53"
+    remain = "/apikey/"+apikey
     yql_query = makeYqlQuery(req)
     if yql_query is None:
         return {}
@@ -97,7 +97,7 @@ def processCode(req):
     if req.get("result").get("action") != "stationCode":
         return {}
     baseurl = "https://api.railwayapi.com/v2/suggest-station/name/"
-    remain = "/apikey/3gleroll53"
+    remain = "/apikey/"+apikey
     yql_query = makeQueryForPlace(req)
     if yql_query is None:
         return {}
@@ -111,7 +111,7 @@ def processTrainNumber(req):
     if req.get("result").get("action") != "Tr_Name_to_Code":
         return {}
     baseurl = "https://api.railwayapi.com/v2/suggest-train/train/"
-    remain = "/apikey/3gleroll53"
+    remain = "/apikey/"+apikey
     yql_query = makeYqlQueryForTrain(req)
     if yql_query is None:
         return {}
@@ -126,7 +126,7 @@ def processTrainBtwnStations(req):
     if req.get("result").get("action") != "train_btwn_stations":
         return {}
     baseurl = "https://api.railwayapi.com/v2/between/source/"
-    remain = "/apikey/3gleroll53"
+    remain = "/apikey/"+apikey
     yql_query_src  = makeYqlQueryForSrc(req)
     if yql_query_src is None:
         return {}
@@ -151,7 +151,7 @@ def processTrainFare(req):
     if req.get("result").get("action") != "TrainFare":
         return {}
     baseurl = "https://api.railwayapi.com/v2/fare/train/"
-    remain = "/apikey/3gleroll53"
+    remain = "/apikey/"+apikey
     yql_query_date  = makeYqlQueryForDat(req)
     if yql_query_date is None:
         yql_query_date = "18-04-2018"
