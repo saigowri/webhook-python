@@ -302,9 +302,9 @@ def makeWebhookResultForCancelled(data):
         msg.append( train['name'] +",")
     messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
     reply = {
-            "speech": speech,
-            "displayText": speech,
-            "messages": messages,
+            "speech": "dgryh",
+            "displayText": "dgryh",
+            "messages": [{"type":0,"speech": "dgryh"}],
             "source": "webhook-dm"
             }
     return reply
