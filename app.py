@@ -95,6 +95,7 @@ def processRoute(req):
     res = makeWebhookResultRoute(data)
     return res
 
+# Station Code
 def processCode(req):
     if req.get("result").get("action") != "stationCode":
         return {}
@@ -106,9 +107,10 @@ def processCode(req):
     yql_url = baseurl + yql_query + remain
     result = urlopen(yql_url).read()
     data = json.loads(result)
-    res = makeWebhookResult3(data)
+    res = makeWebhookResultCode(data)
     return res
 
+#Train Name to Code
 def processTrainNumber(req):
     if req.get("result").get("action") != "Tr_Name_to_Code":
         return {}
@@ -219,7 +221,7 @@ def makeWebhookResultRoute(data):
         "source": "webhook-dm"
     }
 
-def makeWebhookResult3(data):
+def makeWebhookResultCode(data):
 
     msg = []
     speech = ""
