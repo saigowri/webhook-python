@@ -301,12 +301,12 @@ def makeWebhookResultForCancelled(data, trainName, date):
     msg = []
     speech = ""
     flag = 0
-    for train in data['trains']:
-	if trainName == train['name']:
-		speech = train['name'] + " having train number " + train['number'] + " is cancelled on " + date
-        	msg.append( train['name'] + " having train number " + train['number'] + " is cancelled on " + date)
-		flag = 1
-		break
+#     for train in data['trains']:
+# 	if trainName == train['name']:
+# 		speech = train['name'] + " having train number " + train['number'] + " is cancelled on " + date
+#         	msg.append( train['name'] + " having train number " + train['number'] + " is cancelled on " + date)
+# 		flag = 1
+# 		break
     if flag == 0:
 	speech = trainName + " is not cancelled on " + date
         msg.append( trainName + " is not cancelled on " + date)
