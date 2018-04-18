@@ -243,6 +243,9 @@ def makeWebhookResultCode(data):
 def makeWebhookResultTrain(data):
     msg = []
     speech = ""
+    if not data['trains']:
+        speech = "Sorry, I could not find any trains you mentioned."
+        msg.append(speech);
     for train in data['trains']:
         speech = speech + train['name'] +"  -  "+ train['number'] + ", "
         msg.append(train['name'] +"  -  "+ train['number'])
