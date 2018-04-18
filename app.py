@@ -188,7 +188,22 @@ def processTrainFare(req):
     res = makeWebhookResultForFARE(data)
     return res
 
-
+def processCancelledTrains(req):
+    if req.get("result").get("action") != "CancelledTrains":
+        return {}
+    baseurl = "https://api.railwayapi.com/v2/cancelled"
+    remain = "/apikey/"+apikey
+    yql_query_date  = makeYqlQueryForDat(req)
+    if yql_query_date is None:
+        yql_query_date = datetime.date.today().strftime("%d-%m-%Y")
+    date = "/date/" + yql_query_date
+    yql_url = baseurl + date + remain
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    res = makeWebhookResultForCancelled(data)
+    return res
+	
+	
 # ----------------------------------------json data extraction functions---------------------------------------------------
 
 def makeWebhookResult1(data):
@@ -275,6 +290,17 @@ def makeWebhookResultForFARE(data):
         # "contextOut": [],
         "source": "webhook-dm"
     }
+	
+def makeWebhookResultForCancelled(data):
+	speech = data
+    return {
+        "speech": speech,
+        "displayText": speech,
+        # "data": data,
+        # "contextOut": [],
+        "source": "webhook-dm"
+    }
+	
 # ------------------------------------query parameter extracting functions---------------------------------------------------
 
 
