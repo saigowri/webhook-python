@@ -252,8 +252,9 @@ def makeWebhookResult4(data):
 def makeWebhookResultForBtwnStations(data):
     msg = []
     speech = ""
-#     if(data['trains']] )
-#         return "No Trains in that route"
+    if not data['trains']:
+        speech = "No Trains in that route"
+        msg.append("No Trains in that route")
     for train in data['trains']:
         speech = speech + train['name'] + ", Starts at "+ train['src_departure_time'] +", Reaches at "+ train['dest_arrival_time'] +","
         msg.append( train['name'] +", Starts at "+ train['src_departure_time'] +", Reaches at "+ train['dest_arrival_time'])
