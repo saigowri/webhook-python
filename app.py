@@ -43,7 +43,7 @@ def webhook():
     print("Request:")
     print(json.dumps(req, indent=4))
     if req.get("result").get("action") == "trainStatus":
-        res = processRequest(req)
+        res = processStatus(req)
     if req.get("result").get("action") == "trainRoute":
         res = processRoute(req)
     if req.get("result").get("action") == "stationCode":
@@ -66,7 +66,8 @@ def webhook():
 
 #----------------------------------------processing Funtions---------------------------------------------------
 
-def processRequest(req):
+#Train Status
+def processStatus(req):
     if req.get("result").get("action") != "trainStatus":
         return {}
     baseurl = "https://api.railwayapi.com/v2/live/train/" 
@@ -78,9 +79,10 @@ def processRequest(req):
     yql_url = baseurl + yql_query + remain
     result = urlopen(yql_url).read()
     data = json.loads(result)
-    res = makeWebhookResult1(data)
+    res = makeWebhookResultStatus(data)
     return res
 
+#Train Route
 def processRoute(req):
     if req.get("result").get("action") != "trainRoute":
         return {}
@@ -92,9 +94,10 @@ def processRoute(req):
     yql_url = baseurl + yql_query + remain
     result = urlopen(yql_url).read()
     data = json.loads(result)
-    res = makeWebhookResult2(data)
+    res = makeWebhookResultRoute(data)
     return res
 
+# Station Code
 def processCode(req):
     if req.get("result").get("action") != "stationCode":
         return {}
@@ -106,9 +109,10 @@ def processCode(req):
     yql_url = baseurl + yql_query + remain
     result = urlopen(yql_url).read()
     data = json.loads(result)
-    res = makeWebhookResult3(data)
+    res = makeWebhookResultCode(data)
     return res
 
+#Train Name to Code
 def processTrainNumber(req):
     if req.get("result").get("action") != "Tr_Name_to_Code":
         return {}
@@ -120,10 +124,10 @@ def processTrainNumber(req):
     yql_url = baseurl +yql_query+ remain
     result = urlopen(yql_url).read()
     data = json.loads(result)
-    res = makeWebhookResult4(data)
+    res = makeWebhookResultTrain(data)
     return res
 
-
+#Train between stations
 def processTrainBtwnStations(req):
     if req.get("result").get("action") != "train_btwn_stations":
         return {}
@@ -229,8 +233,9 @@ def processCancelledTrains(req):
 	
 # ----------------------------------------json data extraction functions---------------------------------------------------
 
-def makeWebhookResult1(data):
-
+def makeWebhookResultStatus(data):
+    if not data.get('position'):
+        speech = "No such train !!!"
     speech = data.get('position')
     return {
         "speech": speech,
@@ -239,12 +244,13 @@ def makeWebhookResult1(data):
         # "contextOut": [],
         "source": "webhook-dm"
     }
-def makeWebhookResult2(data):
+def makeWebhookResultRoute(data):
 
 #     speech = data.get('position')
     speech = ""
     for routes in data['route']:
         speech =  speech +routes['station']['name'] + " -> "
+#    speech = speech.rstrip('>')
     return {
         "speech": speech,
         "displayText": speech,
@@ -253,10 +259,12 @@ def makeWebhookResult2(data):
         "source": "webhook-dm"
     }
 
-def makeWebhookResult3(data):
-
+def makeWebhookResultCode(data):
     msg = []
     speech = ""
+    if not data['stations']:
+        speech = "Sorry, I could not find any stations in the city you mentioned."
+        msg.append(speech);
     for station in data['stations']:
         speech = speech + station['name'] +"  -  "+ station['code'] + ", "
         msg.append(station['name'] +"  -  "+ station['code'])
@@ -270,9 +278,12 @@ def makeWebhookResult3(data):
     return reply
 
 
-def makeWebhookResult4(data):
+def makeWebhookResultTrain(data):
     msg = []
     speech = ""
+    if not data['trains']:
+        speech = "Sorry, I could not find any trains you mentioned."
+        msg.append(speech);
     for train in data['trains']:
         speech = speech + train['name'] +"  -  "+ train['number'] + ", "
         msg.append(train['name'] +"  -  "+ train['number'])
@@ -290,8 +301,9 @@ def makeWebhookResult4(data):
 def makeWebhookResultForBtwnStations(data):
     msg = []
     speech = ""
-#     if(data['trains']] )
-#         return "No Trains in that route"
+    if not data['trains']:
+        speech = "No Trains in that route"
+        msg.append("No Trains in that route")
     for train in data['trains']:
         speech = speech + train['name'] + ", Starts at "+ train['src_departure_time'] +", Reaches at "+ train['dest_arrival_time'] +","
         msg.append( train['name'] +", Starts at "+ train['src_departure_time'] +", Reaches at "+ train['dest_arrival_time'])
