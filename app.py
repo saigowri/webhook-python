@@ -198,11 +198,14 @@ def processCancelledTrains(req):
     yql_query_date  = makeYqlQueryForDat(req)
     if yql_query_date is None:
         yql_query_date = datetime.date.today().strftime("%d-%m-%Y")
+    yql_query_trainName = makeYqlQueryForTrain(req)
+    if yql_query_trainName is None:
+	return {}
     date = "/date/" + yql_query_date
-    yql_url = "https://api.railwayapi.com/v2/cancelled/date/18-04-2018/apikey/1f8y1ujgm5/"
+    yql_url = baseurl + date + remain
     result = urlopen(yql_url).read()
     data = json.loads(result)
-    res = makeWebhookResultForCancelled(data)
+    res = makeWebhookResultForCancelled(data, yql_query_trainName, yql_query_date)
     return res
 	
 	
@@ -294,12 +297,14 @@ def makeWebhookResultForFARE(data):
         "source": "webhook-dm"
     }
 	
-def makeWebhookResultForCancelled(data):
+def makeWebhookResultForCancelled(data, trainName, date):
     msg = []
     speech = ""
     for train in data['trains']:
-        speech = speech + train['name'] + ","
-        msg.append( train['name'] +",")
+	if trainName == train['name']:
+		speech = train['name'] + " having train number " + train['number'] + " is cancelled on " + date
+        	msg.append( train['name'] + " having train number " + train['number'] + " is cancelled on " + date)
+		break
     messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
     reply = {
             "speech": speech,
