@@ -205,8 +205,26 @@ def processCancelledTrains(req):
     yql_url = "https://api.railwayapi.com/v2/cancelled/date/18-04-2018/apikey/1f8y1ujgm5/"
     result = urlopen(yql_url).read()
     data = json.loads(result)
-    res = makeWebhookResultForCancelled( data, yql_query_trainName, yql_query_date )
-    return res
+    msg = []
+    speech = ""
+    flag = 0
+#     for train in data['trains']:
+# 	if trainName == train['name']:
+# 		speech = train['name'] + " having train number " + train['number'] + " is cancelled on " + date
+#         	msg.append( train['name'] + " having train number " + train['number'] + " is cancelled on " + date)
+# 		flag = 1
+# 		break
+    if flag == 0:
+	speech = trainName + " is not cancelled on " + date
+        msg.append( trainName + " is not cancelled on " + date)
+    messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
+    reply = {
+            "speech": speech,
+            "displayText": speech,
+            "messages": messages,
+            "source": "webhook-dm"
+            }
+    return reply
 	
 	
 # ----------------------------------------json data extraction functions---------------------------------------------------
