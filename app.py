@@ -212,7 +212,7 @@ def makeWebhookResultRoute(data):
     speech = ""
     for routes in data['route']:
         speech =  speech +routes['station']['name'] + " -> "
-    speech.rstrip("->")
+    speech = speech.rstrip("->")
     return {
         "speech": speech,
         "displayText": speech,
