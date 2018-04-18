@@ -206,24 +206,22 @@ def processCancelledTrains(req):
     result = urlopen(yql_url).read()
     data = json.loads(result)
     msg = []
-#     speech = ""
-#     flag = 0
-#     for train in data['trains']:
-# 	if yql_query_trainName == train['name']:
-# 		speech = train['name'] + " having train number " + train['number'] + " is cancelled on " + date
-#         	msg.append( train['name'] + " having train number " + train['number'] + " is cancelled on " + date)
-# 		flag = 1
-# 		break
-#     if flag == 0:
-# 	speech = yql_query_trainName + " is not cancelled on " + yql_query_date
-#         msg.append( yql_query_trainName + " is not cancelled on " + yql_query_date)
-    speech = data.get('response_code')
-    msg.append(speech)
+    speech = ""
+    flag = 0
+    for train in data['trains']:
+	if yql_query_trainName == train['name']:
+		speech = train['name'] + " having train number " + train['number'] + " is cancelled on " + yql_query_date
+        	msg.append( train['name'] + " having train number " + train['number'] + " is cancelled on " + yql_query_date)
+		flag = 1
+		break
+    if flag == 0:
+	speech = yql_query_trainName + " is not cancelled on " + yql_query_date
+        msg.append( yql_query_trainName + " is not cancelled on " + yql_query_date)
     messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
     reply = {
             "speech": speech,
             "displayText": speech,
-#             "messages": messages,
+            "messages": messages,
             "source": "webhook-dm"
             }
     return reply
