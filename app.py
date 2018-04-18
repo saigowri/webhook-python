@@ -290,7 +290,7 @@ def makeYqlQuery(req):
 def makeYqlQueryForTrain(req):
     result = req.get("result")
     parameters = result.get("parameters")
-    trainname = parameters.get("Train_name")
+    trainname = parameters.get("Train_names")
     if trainname is None:
         return None
     return trainname
