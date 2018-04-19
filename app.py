@@ -287,23 +287,24 @@ def processPNRStatus(req):
     msg = []
     speech = ""
     train = json.dumps(data.get("train").get("name"))
+    print("Here "+train)
     if train == "null":
         speech = "Sorry, the PNR seems to be invalid or expired"
         msg.append(speech)
     else:
-        print("Train "+train)
-        speech = "The chart for the train " + train
-        speech = speech + " (" + json.dumps(data.get("train").get("number")) + ") "
-        print("Speech "+speech)
-        chart_prepared = json.dumps(data.get("chart_prepared"))#.get("name")
-        if chart_prepared == "false":
-            speech = speech + "has not been prepared"
-        else:
-            speech = speech + "has been prepared"
-        msg.append(speech)
-        details = " -> The booking details of the passengers are as follows:"
-        speech = speech + details
-        msg.append(speech)
+        print("Here "+train)
+#         speech = "The chart for the train " + train
+#         speech = speech + " (" + json.dumps(data.get("train").get("number")) + ") "
+#         print("Speech "+speech)
+#         chart_prepared = json.dumps(data.get("chart_prepared"))#.get("name")
+#         if chart_prepared == "false":
+#             speech = speech + "has not been prepared"
+#         else:
+#             speech = speech + "has been prepared"
+#         msg.append(speech)
+#         details = " -> The booking details of the passengers are as follows:"
+#         speech = speech + details
+#         msg.append(details)
 	
     messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
     reply = {
