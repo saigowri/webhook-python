@@ -281,12 +281,10 @@ def processPNRStatus(req):
     if pnrnum is None:
         speech = "Please enter pnr number"
     query = baseurl + pnrnum + remain
-    print("query")
-    print(query)
     result = urlopen(query).read()
+    data = json.loads(result)   
     print("result")
-    print(result)
-    data = json.loads(result)    
+    print(json.dumps(data, indent=4)) 
     chart_prepared = data.get("train").get("name")
     speech = "The chart has been prepared: "+ chart_prepared
 #    if data.get('response_code') == 210:
