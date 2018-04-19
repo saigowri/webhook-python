@@ -256,7 +256,8 @@ def processTrainName(req):
     data = json.loads(result)
     msg = []
     speech = ""
-    for train in data['train']:
+    train = data.get('train')
+    if train['number'] == trainNum:
         speech = speech + train['name'] +"  -  "+ train['number'] + ", "
         msg.append(train['name'] +"  -  "+ train['number'])
     messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
