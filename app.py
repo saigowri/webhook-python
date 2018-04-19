@@ -286,7 +286,10 @@ def processPNRStatus(req):
     print("result")
     print(json.dumps(data.get("chart_prepared"))) 
     chart_prepared = json.dumps(data.get("chart_prepared"))#.get("name")
-    speech = "The chart has been prepared: "+ chart_prepared
+    if chart_prepared == "false":
+        speech = "The chart has not been prepared"
+    else:
+        speech = "The chart has been prepared"
 #    if data.get('response_code') == 210:
 #        speech = "Train may be cancelled or is not scheduled to run"
     reply = {
