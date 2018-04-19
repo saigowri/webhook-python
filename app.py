@@ -273,20 +273,20 @@ def processTrainName(req):
 	
 #PNR Status
 def processPNRStatus(req):
-#     if req.get("result").get("action") != "PNRStatus":
-#         return {}
-#     baseurl = "https://api.railwayapi.com/v2/pnr-status/pnr/" 
-#     remain = "/apikey/"+apikey
-#     rest = req.get("result")
-#     parameters = rest.get("parameters")
-#     pnrnum = parameters.get("number-integer")
-#     if pnrnum is None:
-#         return {}
-#     yql_url = baseurl + pnrnum + remain
-#     result = urlopen(yql_url).read()
-#     data = json.loads(result)    
-#     chart_prepared = data.get('chart_prepared')
-    speech = "The chart has been prepared: "#+ chart_prepared
+    if req.get("result").get("action") != "PNRStatus":
+        return {}
+    baseurl = "https://api.railwayapi.com/v2/pnr-status/pnr/" 
+    remain = "/apikey/"+apikey
+    rest = req.get("result")
+    parameters = rest.get("parameters")
+    pnrnum = parameters.get("number-integer")
+    if pnrnum is None:
+        return {}
+    yql_url = baseurl + pnrnum + remain
+    result = urlopen(yql_url).read()
+    data = json.loads(result)    
+    chart_prepared = data.get('chart_prepared')
+    speech = "The chart has been prepared: "+ chart_prepared
 #    if data.get('response_code') == 210:
 #        speech = "Train may be cancelled or is not scheduled to run"
     reply = {
