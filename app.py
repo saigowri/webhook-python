@@ -56,6 +56,8 @@ def webhook():
         res = processTrainFare(req)
     if req.get("result").get("action") == "cancelledTrain":
         res = processCancelledTrains(req)
+    if req.get("result").get("action") == "train_code_to_name":
+        res = processTrainName(req)
     if req.get("result").get("action") == "PNRStatus":
         res = processPNRStatus(req)
     res = json.dumps(res, indent=4)
@@ -204,9 +206,18 @@ def processCancelledTrains(req):
     yql_query_date  = makeYqlQueryForDat(req)
     if yql_query_date is None:
         yql_query_date = datetime.date.today().strftime("%d-%m-%Y")
-    yql_query_trainName = makeYqlQueryForTrain(req)
-    if yql_query_trainName is None:
-        return {}
+    #get train name or number
+    result = req.get("result")
+    parameters = result.get("parameters")
+    trainvar = ""
+    trainname = parameters.get("Train_name")
+    if trainname:
+        yql_query_train = trainname
+        trainvar = 'name'
+    trainnum = parameters.get("Train_numbers") 
+    if trainnum:
+        yql_query_train = trainnum
+        trainvar = 'number'
     date = "/date/" + yql_query_date
     yql_url = baseurl + date + remain
     result = urlopen(yql_url).read()
@@ -215,7 +226,7 @@ def processCancelledTrains(req):
     speech = ""
     flag = 0
     for train in data['trains']:
-        if yql_query_trainName.lower() in train['name'].lower():
+        if yql_query_train.lower() in train[trainvar].lower():
             speech = train['name'] + " having train number " + train['number'] + " is cancelled on " + yql_query_date
             msg.append( train['name'] + " having train number " + train['number'] + " is cancelled on " + yql_query_date)
             flag = 1
@@ -231,8 +242,34 @@ def processCancelledTrains(req):
             "source": "webhook-dm"
             }
     return reply
-	
 
+#Train Code to Name
+def processTrainName(req):
+    baseurl = "https://api.railwayapi.com/v2/name-number/train/"
+    remain = "/apikey/"+apikey
+    trainNum = makeYqlQuery(req)
+    if trainNum is None:
+        return {}
+    yql_url = baseurl + trainNum + remain
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    msg = []
+    speech = ""
+    if not data['days']:
+        speech = "Sorry, I could not find the train number you mentioned."
+        msg.append(speech)
+    else:
+        for train in data['trains']:
+            speech = speech + train['name'] +"  -  "+ train['number'] + ", "
+            msg.append(train['name'] +"  -  "+ train['number'])
+    messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
+    reply = {
+            "speech": speech,
+            "displayText": speech,
+            "messages": messages,
+            "source": "webhook-dm"
+            }
+    return reply
 	
 #PNR Status
 def processPNRStatus(req):
@@ -257,7 +294,8 @@ def processPNRStatus(req):
         "displayText": speech,
         "source": "webhook-dm"
     }
-	
+
+
 # ----------------------------------------json data extraction functions---------------------------------------------------
 
 def makeWebhookResultStatus(data):
