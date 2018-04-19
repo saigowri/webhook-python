@@ -301,13 +301,13 @@ def processPNRStatus(req):
         print("Speech "+speech)
         chart_prepared = json.dumps(data.get("chart_prepared"))#.get("name")
         if chart_prepared == "false":
-            speech = speech + " has not been prepared"
+            speech = speech + " has not been prepared."
         else:
-            speech = speech + " has been prepared"
+            speech = speech + " has been prepared."
         msg.append(speech)
-#         details = " -> The booking details of the passengers are as follows:"
-#         speech = speech + details
-#         msg.append(details)
+        details = " -> The booking details of the passengers are as follows:"
+        speech = speech + details
+        msg.append(details)
 	
     messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
     reply = {
