@@ -161,8 +161,6 @@ def processTrainFare(req):
     baseurl = "https://api.railwayapi.com/v2/fare/train/"
     remain = "/apikey/"+apikey
     yql_query_date  = makeYqlQueryForDat(req)
-    if yql_query_date is None:
-        yql_query_date = "18-04-2018"
     yql_query_src  = makeYqlQueryForSrc(req)
     if yql_query_src is None:
         return {}
@@ -353,7 +351,7 @@ def makeWebhookResultForBtwnStations(data):
     return reply
 
 def makeWebhookResultForFARE(data):
-    speech = data.get('fare')
+    speech = data.get("fare")
     return {
         "speech": speech,
         "displayText": speech,
