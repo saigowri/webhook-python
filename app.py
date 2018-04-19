@@ -306,10 +306,11 @@ def processPNRStatus(req):
             speech = speech + " has been prepared."
         msg.append(speech)
         boarding_point = json.dumps(data.get("boarding_point").get("name"))
-        details = "The intended journey starts from " + boarding_point + " to "
+        journey_class = json.dumps(data.get("journey_class").get("name"))
+        details = "The intended"+ journey_class +" class journey starts from " + boarding_point + " to "
         reservation_upto = json.dumps(data.get("reservation_upto").get("name"))
         doj =  json.dumps(data.get("doj"))
-        details = reservation_upto + " on " + doj
+        details = details + reservation_upto + " on " + doj + 
         speech = speech + " -> " + details
         msg.append(details)
         total_passengers =  json.dumps(data.get("total_passengers")) 
