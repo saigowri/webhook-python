@@ -286,14 +286,16 @@ def processPNRStatus(req):
 #     result = urlopen(yql_url).read()
 #     data = json.loads(result)    
 #     chart_prepared = data.get('chart_prepared')
-#     speech = "The chart has been prepared: "+ chart_prepared
+    speech = "The chart has been prepared: "#+ chart_prepared
 #    if data.get('response_code') == 210:
 #        speech = "Train may be cancelled or is not scheduled to run"
-    return {
-        "speech": "hi",
-        "displayText": "hi",
-        "source": "webhook-dm"
-    }
+    reply = {
+            "speech": speech,
+            "displayText": speech,
+  #          "messages": messages,
+            "source": "webhook-dm"
+            }
+    return reply
 
 
 # ----------------------------------------json data extraction functions---------------------------------------------------
