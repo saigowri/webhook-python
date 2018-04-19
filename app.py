@@ -310,11 +310,11 @@ def processPNRStatus(req):
         details = "The intended"+ journey_class +" class journey starts from " + boarding_point + " to "
         reservation_upto = json.dumps(data.get("reservation_upto").get("name"))
         doj =  json.dumps(data.get("doj"))
-        details = details + reservation_upto + " on " + doj + 
+        details = details + reservation_upto + " on " + doj 
         speech = speech + " -> " + details
         msg.append(details)
         total_passengers =  json.dumps(data.get("total_passengers")) 
-        details = "The booking details of "+ total_passengers +" passengers are as follows:"
+        details = "The booking details of "+ total_passengers +" passenger/s are as follows:"
         speech = speech + " -> " + details
         msg.append(details)
 #         for train in data['trains']:
