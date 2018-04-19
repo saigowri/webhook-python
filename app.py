@@ -58,10 +58,12 @@ def webhook():
         res = processCancelledTrains(req)
     if req.get("result").get("action") == "train_code_to_name":
         res = processTrainName(req)
+    if req.get("result").get("action") == "PNRStatus":
+        res = processPNRStatus(req)
     if req.get("result").get("action") == "stationName":
         res = processStationName(req)
     res = json.dumps(res, indent=4)
-    # print(res)
+
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
@@ -245,6 +247,93 @@ def processCancelledTrains(req):
 def processTrainName(req):
     baseurl = "https://api.railwayapi.com/v2/name-number/train/"
     remain = "/apikey/"+apikey
+    trainNum = makeYqlQuery(req)
+    if trainNum is None:
+        return {}
+    yql_url = baseurl + trainNum + remain
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    msg = []
+    speech = ""
+    if not data['days']:
+        speech = "Sorry, I could not find the train number you mentioned."
+        msg.append(speech)
+    else:
+        for train in data['trains']:
+            speech = speech + train['name'] +"  -  "+ train['number'] + ", "
+            msg.append(train['name'] +"  -  "+ train['number'])
+    messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
+    reply = {
+            "speech": speech,
+            "displayText": speech,
+            "messages": messages,
+            "source": "webhook-dm"
+            }
+    return reply
+	
+#PNR Status
+def processPNRStatus(req):
+    if req.get("result").get("action") != "PNRStatus":
+        return {}
+    baseurl = "https://api.railwayapi.com/v2/pnr-status/pnr/" 
+    remain = "/apikey/"+apikey
+    pnrnum = req.get("result").get("parameters").get("pnr_number")
+    if pnrnum is None:
+        speech = "Please enter pnr number"
+    query = baseurl + pnrnum + remain
+    result = urlopen(query).read()
+    data = json.loads(result)   
+    #Process response
+    msg = []
+    speech = ""
+    train = json.dumps(data.get("train").get("name"))
+    if train == "null":
+        speech = "Sorry, the PNR seems to be invalid or expired"
+        msg.append(speech)
+    else:
+        speech = "The chart for the train " + train
+        train_num =  json.dumps(data.get("train").get("number")) 
+        print("Here "+train_num)
+        speech = speech + " (" + train_num + ") from station "
+        from_stat = json.dumps(data.get("from_station").get("name")) 
+        to_stat = json.dumps(data.get("to_station").get("name")) 
+        speech = speech + from_stat + " to the station " + to_stat
+        print("Speech "+speech)
+        chart_prepared = json.dumps(data.get("chart_prepared"))#.get("name")
+        if chart_prepared == "false":
+            speech = speech + " has not been prepared."
+        else:
+            speech = speech + " has been prepared."
+        msg.append(speech)
+        boarding_point = json.dumps(data.get("boarding_point").get("name"))
+        journey_class = json.dumps(data.get("journey_class").get("code"))
+        details = "The intended "+ journey_class +" class journey starts from " + boarding_point + " to "
+        reservation_upto = json.dumps(data.get("reservation_upto").get("name"))
+        doj =  json.dumps(data.get("doj"))
+        details = details + reservation_upto + " on " + doj 
+        speech = speech + " -> " + details
+        msg.append(details)
+        total_passengers =  json.dumps(data.get("total_passengers")) 
+        details = "The booking details of "+ total_passengers +" passenger/s are as follows: "
+        speech = speech + " -> " + details
+        msg.append(details)
+        for passenger in data['passengers']:
+            speech = speech + passenger['current_status'] + ", "
+            msg.append(passenger['current_status'])
+	
+    messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
+    reply = {
+            "speech": speech,
+            "displayText": speech,
+            "messages": messages,
+            "source": "webhook-dm"
+            }
+    return reply
+
+#Train Code to Name
+def processTrainName(req):
+    baseurl = "https://api.railwayapi.com/v2/name-number/train/"
+    remain = "/apikey/"+apikey
     # get train number
     result = req.get("result")
     parameters = result.get("parameters")
@@ -301,12 +390,14 @@ def processStationName(req):
             "messages": messages,
             "source": "webhook-dm"
             }
-    return reply	
-	
+    return reply
+  
 # ----------------------------------------json data extraction functions---------------------------------------------------
 
 def makeWebhookResultStatus(data):
     speech = data.get('position')
+    if data.get('response_code') == 210:
+        speech = "Train may be cancelled or is not scheduled to run"
     return {
         "speech": speech,
         "displayText": speech,
