@@ -186,7 +186,7 @@ def processTrainFare(req):
     n = "/pref/"+ pref
     o = "/quota/"+ quota
     r = m + n + o
-    date = "/date/" + "20-04-2018"
+    date = "/date/" + yql_query_date
     f = z + r + date
     yql_url = baseurl + f + remain
     result = urlopen(yql_url).read()
