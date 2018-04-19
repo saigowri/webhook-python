@@ -61,7 +61,7 @@ def webhook():
     if req.get("result").get("action") == "PNRStatus":
         res = processPNRStatus(req)
     res = json.dumps(res, indent=4)
-    # print(res)
+
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
@@ -282,6 +282,8 @@ def processPNRStatus(req):
         speech = "Please enter pnr number"
     yql_url = baseurl + pnrnum + remain
     result = urlopen(yql_url).read()
+    print0("result")
+    print(result)
     data = json.loads(result)    
     chart_prepared = data.get("train").get("name")
     speech = "The chart has been prepared: "+ chart_prepared
