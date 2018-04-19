@@ -246,7 +246,7 @@ def processTrainName(req):
     baseurl = "https://api.railwayapi.com/v2/name-number/train/"
     remain = "/apikey/"+apikey
     trainNum = makeYqlQuery(req)
-    if yql_query is None:
+    if trainNum is None:
         return {}
     yql_url = baseurl + trainNum + remain
     result = urlopen(yql_url).read()
