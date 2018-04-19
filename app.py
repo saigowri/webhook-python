@@ -243,8 +243,6 @@ def processCancelledTrains(req):
 
 #Train Code to Name
 def processTrainName(req):
-    if req.get("result").get("action") != "Tr_Name_to_Code":
-        return {}
     baseurl = "https://api.railwayapi.com/v2/name-number/train/"
     remain = "/apikey/"+apikey
     trainNum = makeYqlQuery(req)
