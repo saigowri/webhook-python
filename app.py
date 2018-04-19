@@ -288,8 +288,8 @@ def processStationName(req):
         if stationCode == station['code'].lower():
             speech = speech + "Station name of " + station['code'] + " is " + station['name']
             msg.append("Station name of " + station['code'] + " is " + station['name'])
-    speech = speech + "Its neighbouring stations are: "
-    msg.append("Its neighbouring stations are: ")
+            speech = speech + "Its neighbouring stations are: "
+            msg.append("Its neighbouring stations are: ")
     for station in data['stations']:
         if stationCode != station['code'].lower():
             speech = speech + station['code'] + " - " + station['name']
