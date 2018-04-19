@@ -209,11 +209,11 @@ def processCancelledTrains(req):
     trainname = parameters.get("Train_name")
     if trainname:
         yql_query_train = trainname
-	trainvar = "name"
+	trainvar = 'name'
     trainnum = parameters.get("Train_numbers") 
     if trainnum:
         yql_query_train = trainnum
-	trainvar = "number"
+	trainvar = 'number'
     date = "/date/" + yql_query_date
     yql_url = baseurl + date + remain
     result = urlopen(yql_url).read()
