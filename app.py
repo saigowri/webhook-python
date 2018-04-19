@@ -277,15 +277,15 @@ def processPNRStatus(req):
         return {}
     baseurl = "https://api.railwayapi.com/v2/pnr-status/pnr/" 
     remain = "/apikey/"+apikey
-    rest = req.get("result")
-    parameters = rest.get("parameters")
-    pnrnum = parameters.get("number-integer")
+#    rest = req.get("result")
+#    parameters = req.get("result").get("parameters")
+    pnrnum = req.get("result").get("parameters").get("number-integer")
 #     if pnrnum is None:
 #         return {}
 #     yql_url = baseurl + pnrnum + remain
 #     result = urlopen(yql_url).read()
 #     data = json.loads(result)    
-    chart_prepared = pnrnum#data.get('chart_prepared')
+    chart_prepared = pnrnum #data.get('chart_prepared')
     speech = "The chart has been prepared: "+ chart_prepared
 #    if data.get('response_code') == 210:
 #        speech = "Train may be cancelled or is not scheduled to run"
