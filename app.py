@@ -286,7 +286,7 @@ def processStationName(req):
         speech = "Sorry, I could not find any stations in the city you mentioned."
         msg.append(speech)
     for station in data['stations']:
-	if stationCode == station['code'].toLower():
+        if stationCode == station['code'].toLower():
             speech = speech + "Station name of " + station['code'] + " is " + station['name']
             msg.append("Station name of " + station['code'] + " is " + station['name'])
     speech = speech + "Its neighbouring stations are: " + "\n"
