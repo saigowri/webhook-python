@@ -284,8 +284,8 @@ def processPNRStatus(req):
     result = urlopen(query).read()
     data = json.loads(result)   
     print("result")
-    print(json.dumps(data.get("train"), indent=4)) 
-    chart_prepared = data.get("response_code")#.get("name")
+    print(json.dumps(data.get("chart_prepared"))) 
+    chart_prepared = json.dumps(data.get("chart_prepared"))#.get("name")
     speech = "The chart has been prepared: "+ chart_prepared
 #    if data.get('response_code') == 210:
 #        speech = "Train may be cancelled or is not scheduled to run"
