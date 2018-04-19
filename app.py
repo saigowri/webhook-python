@@ -273,14 +273,12 @@ def processTrainName(req):
 # ----------------------------------------json data extraction functions---------------------------------------------------
 
 def makeWebhookResultStatus(data):
-    speech = data.get('position')
+    speech = data.get('response_code')
     if data.get('response_code') == 210:
         speech = "Train may be cancelled or is not scheduled to run"
     return {
         "speech": speech,
         "displayText": speech,
-        # "data": data,
-        # "contextOut": [],
         "source": "webhook-dm"
     }
 def makeWebhookResultRoute(data):
