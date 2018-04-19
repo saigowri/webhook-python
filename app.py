@@ -251,23 +251,23 @@ def processTrainName(req):
     trainNum = parameters.get("Train_numbers")
     if trainNum is None:
         return None
-#     yql_url = baseurl + trainNum + remain
-#     result = urlopen(yql_url).read()
-#     data = json.loads(result)
-#     msg = []
-#     speech = ""
-#     if not data['days']:
-#         speech = "Sorry, I could not find the train number you mentioned."
-#         msg.append(speech)
-#     else:
-#         for train in data['trains']:
-#             speech = speech + train['name'] +"  -  "+ train['number'] + ", "
-#             msg.append(train['name'] +"  -  "+ train['number'])
-#     messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
+    yql_url = baseurl + trainNum + remain
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    msg = []
+    speech = ""
+    if data['response_code'] == 404:
+        speech = "Sorry, I could not find the train number you mentioned."
+        msg.append(speech)
+    else:
+        for train in data['trains']:
+            speech = speech + train['name'] +"  -  "+ train['number'] + ", "
+            msg.append(train['name'] +"  -  "+ train['number'])
+    messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
     reply = {
-            "speech": trainNum,
-            "displayText": trainNum,
-            #"messages": messages,
+            "speech": speech,
+            "displayText": speech,
+            "messages": messages,
             "source": "webhook-dm"
             }
     return reply
