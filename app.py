@@ -256,13 +256,9 @@ def processTrainName(req):
     data = json.loads(result)
     msg = []
     speech = ""
-    if data['response_code'] == 404:
-        speech = "Sorry, I could not find the train number you mentioned."
-        msg.append(speech)
-    else:
-        for train in data['trains']:
-            speech = speech + train['name'] +"  -  "+ train['number'] + ", "
-            msg.append(train['name'] +"  -  "+ train['number'])
+    for train in data['trains']:
+        speech = speech + train['name'] +"  -  "+ train['number'] + ", "
+        msg.append(train['name'] +"  -  "+ train['number'])
     messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
     reply = {
             "speech": speech,
