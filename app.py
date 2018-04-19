@@ -280,7 +280,6 @@ def makeWebhookResultForBtwnStations(data):
     return reply
 
 def makeWebhookResultForFARE(data):
-    
     speech = data.get('fare')
     return {
         "speech": speech,
