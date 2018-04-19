@@ -292,7 +292,7 @@ def processPNRStatus(req):
         msg.append(speech)
     else:
         speech = "The chart for the train " + train
-	train_num =  json.dumps(data.get("train").get("number")) 
+        train_num =  json.dumps(data.get("train").get("number")) 
         print("Here "+train_num)
         speech = speech + " (" + train_num + ") "
         print("Speech "+speech)
