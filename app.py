@@ -279,7 +279,7 @@ def processPNRStatus(req):
     remain = "/apikey/"+apikey
 #    rest = req.get("result")
 #    parameters = req.get("result").get("parameters")
-    pnrnum = req.get("result").get("parameters").get("number-integer")
+    pnrnum = req.get("result").get("parameters").get("pnr_number")
 #     if pnrnum is None:
 #         return {}
 #     yql_url = baseurl + pnrnum + remain
