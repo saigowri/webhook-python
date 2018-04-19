@@ -56,6 +56,8 @@ def webhook():
         res = processTrainFare(req)
     if req.get("result").get("action") == "cancelledTrain":
         res = processCancelledTrains(req)
+    if req.get("result").get("action") == "train_code_to_name":
+        res = processTrainName(req)
     res = json.dumps(res, indent=4)
     # print(res)
     r = make_response(res)
@@ -230,6 +232,36 @@ def processCancelledTrains(req):
     if flag == 0:
         speech = "The train is not cancelled on " + yql_query_date
         msg.append( "The train is not cancelled on " + yql_query_date)
+    messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
+    reply = {
+            "speech": speech,
+            "displayText": speech,
+            "messages": messages,
+            "source": "webhook-dm"
+            }
+    return reply
+
+#Train Code to Name
+def processTrainName(req):
+    if req.get("result").get("action") != "Tr_Name_to_Code":
+        return {}
+    baseurl = "https://api.railwayapi.com/v2/name-number/train/"
+    remain = "/apikey/"+apikey
+    trainNum = makeYqlQuery(req)
+    if yql_query is None:
+        return {}
+    yql_url = baseurl + trainNum + remain
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    msg = []
+    speech = ""
+    if not data['days']:
+        speech = "Sorry, I could not find the train number you mentioned."
+        msg.append(speech)
+    else:
+        for train in data['trains']:
+            speech = speech + train['name'] +"  -  "+ train['number'] + ", "
+            msg.append(train['name'] +"  -  "+ train['number'])
     messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
     reply = {
             "speech": speech,
