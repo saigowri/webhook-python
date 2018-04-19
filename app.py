@@ -58,6 +58,8 @@ def webhook():
         res = processCancelledTrains(req)
     if req.get("result").get("action") == "train_code_to_name":
         res = processTrainName(req)
+    if req.get("result").get("action") == "stationName":
+	res = processStationName(req)
     res = json.dumps(res, indent=4)
     # print(res)
     r = make_response(res)
@@ -266,7 +268,41 @@ def processTrainName(req):
             "source": "webhook-dm"
             }
     return reply
-	
+
+#Station Code to Name
+def processStationName(req):
+    baseurl = "https://api.railwayapi.com/v2/code-to-name/code/"
+    remain = "/apikey/"+apikey
+    result = req.get("result")
+    parameters = result.get("parameters")
+    stationCode = parameters.get("station_code_name").toLower()
+    yql_url = baseurl +stationCode+ remain
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    msg = []
+    speech = ""
+    stations = ""
+    if not data['stations']:
+        speech = "Sorry, I could not find any stations in the city you mentioned."
+        msg.append(speech)
+    for station in data['stations']:
+	if stationCode == station['code'].toLower():
+            speech = speech + "Station name of " + station['code'] + " is " + station['name']
+            msg.append("Station name of " + station['code'] + " is " + station['name'])
+    speech = speech + "Its neighbouring stations are: " + "\n"
+    msg.append("Its neighbouring stations are: ")
+    for station in data['stations']:
+	if stationCode != station['code'].toLower():
+            speech = speech + station['code'] + " - " + station['name'] + "\n"
+            msg.append("Station name of " + station['code'] + " is " + station['name'])
+    messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
+    reply = {
+            "speech": speech,
+            "displayText": speech,
+            "messages": messages,
+            "source": "webhook-dm"
+            }
+    return reply	
 	
 # ----------------------------------------json data extraction functions---------------------------------------------------
 
