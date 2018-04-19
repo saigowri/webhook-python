@@ -293,7 +293,7 @@ def processPNRStatus(req):
         speech = "Sorry, the PNR seems to be invalid or expired"
         msg.append(speech)
     else:
-	speech = "The chart for the train " + train
+        speech = "The chart for the train " + train
         speech = speech + " (" + json.dumps(data.get("train").get("number")) + ") "
         chart_prepared = json.dumps(data.get("chart_prepared"))#.get("name")
         if chart_prepared == "false":
