@@ -280,9 +280,11 @@ def processPNRStatus(req):
     pnrnum = req.get("result").get("parameters").get("pnr_number")
     if pnrnum is None:
         speech = "Please enter pnr number"
-    yql_url = baseurl + pnrnum + remain
-    result = urlopen(yql_url).read()
-    print0("result")
+    query = baseurl + pnrnum + remain
+    print("query")
+    print(query)
+    result = urlopen(query).read()
+    print("result")
     print(result)
     data = json.loads(result)    
     chart_prepared = data.get("train").get("name")
