@@ -284,18 +284,23 @@ def processPNRStatus(req):
     result = urlopen(query).read()
     data = json.loads(result)   
     print("result")
-    print(json.dumps(data.get("chart_prepared"))) 
-    chart_prepared = json.dumps(data.get("chart_prepared"))#.get("name")
-    if chart_prepared == "false":
-        speech = "The chart has not been prepared"
+    print(json.dumps(data.get("train").get("name"))) 
+    train = json.dumps(data.get("train").get("name"))
+    msg = []
+    if train == "null":
+        speech = "Sorry, the PNR seems to be invalid or expired"
+        msg.append(speech)
     else:
-        speech = "The chart has been prepared"
-#    if data.get('response_code') == 210:
-#        speech = "Train may be cancelled or is not scheduled to run"
+        chart_prepared = json.dumps(data.get("chart_prepared"))#.get("name")
+        if chart_prepared == "false":
+            speech = "The chart has not been prepared"
+        else:
+            speech = "The chart has been prepared"
+    messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
     reply = {
             "speech": speech,
             "displayText": speech,
-  #          "messages": messages,
+            "messages": messages,
             "source": "webhook-dm"
             }
     return reply
