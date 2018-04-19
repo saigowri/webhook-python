@@ -294,13 +294,16 @@ def processPNRStatus(req):
         speech = "The chart for the train " + train
         train_num =  json.dumps(data.get("train").get("number")) 
         print("Here "+train_num)
-        speech = speech + " (" + train_num + ") "
+        speech = speech + " (" + train_num + ") from station "
+        from_stat = json.dumps(data.get("from_station").get("name")) 
+        to_stat = json.dumps(data.get("to_station").get("name")) 
+        speech = speech + from_stat + " to the station " + to_stat
         print("Speech "+speech)
-#         chart_prepared = json.dumps(data.get("chart_prepared"))#.get("name")
-#         if chart_prepared == "false":
-#             speech = speech + "has not been prepared"
-#         else:
-#             speech = speech + "has been prepared"
+        chart_prepared = json.dumps(data.get("chart_prepared"))#.get("name")
+        if chart_prepared == "false":
+            speech = speech + " has not been prepared"
+        else:
+            speech = speech + " has been prepared"
         msg.append(speech)
 #         details = " -> The booking details of the passengers are as follows:"
 #         speech = speech + details
