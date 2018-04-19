@@ -293,7 +293,7 @@ def processStationName(req):
     for station in data['stations']:
         if stationCode != station['code'].lower():
             speech = speech + station['code'] + " - " + station['name']
-            msg.append("Station name of " + station['code'] + " is " + station['name'])
+            msg.append(station['code'] + " - " + station['name'])
     messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
     reply = {
             "speech": speech,
