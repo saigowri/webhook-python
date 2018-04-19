@@ -245,9 +245,12 @@ def processCancelledTrains(req):
 def processTrainName(req):
     baseurl = "https://api.railwayapi.com/v2/name-number/train/"
     remain = "/apikey/"+apikey
-    trainNum = makeYqlQuery(req)
+    # get train number
+    result = req.get("result")
+    parameters = result.get("parameters")
+    trainNum = parameters.get("Train_numbers")
     if trainNum is None:
-        return {}
+        return None
     yql_url = baseurl + trainNum + remain
     result = urlopen(yql_url).read()
     data = json.loads(result)
