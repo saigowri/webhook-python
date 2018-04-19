@@ -202,9 +202,18 @@ def processCancelledTrains(req):
     yql_query_date  = makeYqlQueryForDat(req)
     if yql_query_date is None:
         yql_query_date = datetime.date.today().strftime("%d-%m-%Y")
-    yql_query_trainName = makeYqlQueryForTrain(req)
-    if yql_query_trainName is None:
-        return {}
+    #get train name or number
+    result = req.get("result")
+    parameters = result.get("parameters")
+    trainvar = ""
+    trainname = parameters.get("Train_name")
+    if trainname:
+        yql_query_train = trainname
+	trainvar = "name"
+    trainnum = parameters.get("Train_numbers") 
+    if trainnum:
+        yql_query_train = trainnum
+	trainvar = "number"
     date = "/date/" + yql_query_date
     yql_url = baseurl + date + remain
     result = urlopen(yql_url).read()
@@ -213,7 +222,7 @@ def processCancelledTrains(req):
     speech = ""
     flag = 0
     for train in data['trains']:
-        if yql_query_trainName.lower() in train['name'].lower():
+        if yql_query_train.lower() in train[trainvar].lower():
             speech = train['name'] + " having train number " + train['number'] + " is cancelled on " + yql_query_date
             msg.append( train['name'] + " having train number " + train['number'] + " is cancelled on " + yql_query_date)
             flag = 1
