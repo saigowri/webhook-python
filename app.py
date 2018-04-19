@@ -59,7 +59,7 @@ def webhook():
     if req.get("result").get("action") == "train_code_to_name":
         res = processTrainName(req)
     if req.get("result").get("action") == "stationName":
-	res = processStationName(req)
+        res = processStationName(req)
     res = json.dumps(res, indent=4)
     # print(res)
     r = make_response(res)
