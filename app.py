@@ -292,7 +292,7 @@ def processStationName(req):
     speech = speech + "Its neighbouring stations are: " + "\n"
     msg.append("Its neighbouring stations are: ")
     for station in data['stations']:
-	if stationCode != station['code'].toLower():
+        if stationCode != station['code'].toLower():
             speech = speech + station['code'] + " - " + station['name'] + "\n"
             msg.append("Station name of " + station['code'] + " is " + station['name'])
     messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
