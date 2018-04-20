@@ -155,8 +155,8 @@ def processTrainFare(req):
     if req.get("result").get("action") != "TrainFare":
         return {}
     trainnum = makeYqlQuery(req)
-    fromstation = makeYqlQueryForSrc(req)
-    tostation = makeYqlQueryForDes(req)
+    fromstation = makeQueryForfromstation(req)
+    tostation = makeQueryFortostation(req)
     age = makeYqlQueryForAge(req)
     pref = makeYqlQueryForClass(req)
     quota = makeYqlQueryForQuota(req)
@@ -343,6 +343,24 @@ def makeYqlQueryForAge(req):
     if age is None:
         return None
     return age
+
+
+
+def makeQueryForfromstation(req):
+    result = req.get("result")
+    parameters = result.get("parameters")
+    trainSrc = parameters.get("from")
+    if trainSrc is None:
+        return None
+    return trainSrc
+
+def makeQueryFortostation(req):
+    result = req.get("result")
+    parameters = result.get("parameters")
+    trainSrc = parameters.get("to")
+    if trainSrc is None:
+        return None
+    return trainSrc
 
 # ------------------------------------extra function of weather project for referencing---------------------------------------------------
 
