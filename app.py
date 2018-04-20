@@ -156,34 +156,13 @@ def processTrainFare(req):
         return {}
     baseurl = "https://api.railwayapi.com/v2/fare/train/"
     remain = "/apikey/"+apikey
-    yql_query_date  = makeYqlQueryForDat(req)
     yql_query_date = "20-04-2018"
-    if yql_query_date is None:
-        yql_query_date = "18-04-2018"
-    yql_query_src  = makeYqlQueryForSrc(req) 
     yql_query_src = ktym
-    if yql_query_src is None:
-        return {}
-    yql_query_des  = makeYqlQueryForDes(req)
     yql_query_des = hyb
-    if yql_query_des is None:
-        return {}
-    yql_query_train = makeYqlQuery(req)
     yql_query_train = "17229"
-    if yql_query_train is None:
-        return {}
-    age  = makeYqlQueryForAge(req)
     age = "23"
-    if age is None:
-        return {}
-    pref = makeYqlQueryForClass(req)
     pref = "SL"
-    if pref is None:
-        return {}
-    quota = makeYqlQueryForQuota(req)
     quota = "GN"
-    if quota is None:
-        return {}
     x = "/source/" + yql_query_src
     y = "/dest/" + yql_query_des
     z = yql_query_train + x + y
@@ -191,8 +170,8 @@ def processTrainFare(req):
     n = "/pref/"+ pref
     o = "/quota/"+ quota
     r = m + n + o
-    date = "/date/" + yql_query_date
-    f = z + r + date
+    datet = "/date/" + yql_query_date
+    f = z + r + datet
     yql_url = baseurl + f + remain
 #     yql_url = "https://api.railwayapi.com/v2/fare/train/17229/source/ktym/dest/hyb/age/23/pref/SL/quota/GN/date/20-04-2018/apikey/zc4qtk7x4o"
     result = urlopen(yql_url).read()
