@@ -155,8 +155,8 @@ def processTrainFare(req):
     if req.get("result").get("action") != "TrainFare":
         return {}
     trainnum = makeYqlQuery(req)
-    fromstation = makeQueryForfromstation(req)
-    tostation = makeQueryFortostation(req)
+    fromstation = = makeYqlQueryForSrc(req)
+    tostation = makeYqlQueryForDes(req)
     age = makeYqlQueryForAge(req)
     pref = makeYqlQueryForClass(req)
     quota = makeYqlQueryForQuota(req)
