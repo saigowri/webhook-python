@@ -154,13 +154,13 @@ def processTrainBtwnStations(req):
 def processTrainFare(req):
     if req.get("result").get("action") != "TrainFare":
         return {}
-    trainnum = "17229"
+    trainnum = makeYqlQuery(req)
     fromstation = "ktym"
     tostation = "hyb"
-    age = "19"
-    pref = "SL"
-    quota = "GN"
-    dat = "21-04-2018"
+    age = makeYqlQueryForAge(req)
+    pref = makeYqlQueryForClass(req)
+    quota = makeYqlQueryForQuota(req)
+    dat = makeYqlQueryForDat(req)
     yql_url = "https://api.railwayapi.com/v2/fare/train/"+trainnum+"/source/"+fromstation+"/dest/"+tostation+"/age/"+age+"/pref/"+pref+"/quota/"+quota+"/date/"+dat+"/apikey/"+apikey
     result = urlopen(yql_url).read()
     data = json.loads(result)
