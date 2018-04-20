@@ -157,7 +157,7 @@ def processTrainFare(req):
     trainnum = "17229"
     fromstation = "ktym"
     tostation = "hyb"
-    age = "19" #makeYqlQueryForAge(req)
+    age = makeYqlQueryForAge(req)
     pref = "SL" #makeYqlQueryForClass(req)
     quota = "GN" #makeYqlQueryForQuota(req)
     dat = "21-04-2018" # makeYqlQueryForDat(req)
