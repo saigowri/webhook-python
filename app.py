@@ -155,8 +155,8 @@ def processTrainFare(req):
     if req.get("result").get("action") != "TrainFare":
         return {}
     trainnum = "17229"
-    fromstation = makeYqlQueryForSrc(req)
-    tostation = makeYqlQueryForDes(req)
+    fromstation = "ktym"
+    tostation = "hyb"
     age = "19"
     pref = "SL"
     quota = "GN"
