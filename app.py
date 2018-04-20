@@ -154,7 +154,8 @@ def processTrainBtwnStations(req):
 def processTrainFare(req):
     if req.get("result").get("action") != "TrainFare":
         return {}
-    yql_url = "https://api.railwayapi.com/v2/fare/train/17229/source/ktym/dest/hyb/age/23/pref/SL/quota/GN/date/21-04-2018/apikey/zc4qtk7x4o"
+    trainnum = "17229"
+    yql_url = "https://api.railwayapi.com/v2/fare/train/"+trainnum+"/source/ktym/dest/hyb/age/23/pref/SL/quota/GN/date/21-04-2018/apikey/zc4qtk7x4o"
     result = urlopen(yql_url).read()
     data = json.loads(result)
     res = makeWebhookResultForFARE(data)
