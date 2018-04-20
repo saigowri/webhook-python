@@ -35,7 +35,7 @@ from flask import make_response
 app = Flask(__name__)
 
 #----------------------------------------Main Entry Point---------------------------------------------------
-apikey = "qv6maolyg3"
+apikey = "zc4qtk7x4o"
 @app.route('/webhook', methods=['POST'])
 def webhook():
     req = request.get_json(silent=True, force=True)
@@ -186,7 +186,8 @@ def processTrainFare(req):
     r = m + n + o
     date = "/date/" + yql_query_date
     f = z + r + date
-    yql_url = baseurl + f + remain
+#     yql_url = baseurl + f + remain
+    yql_url = "https://api.railwayapi.com/v2/fare/train/17229/source/ktym/dest/hyb/age/23/pref/SL/quota/GN/date/20-04-2018/apikey/zc4qtk7x4o"
     result = urlopen(yql_url).read()
     data = json.loads(result)
     res = makeWebhookResultForFARE(data)
