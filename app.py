@@ -158,8 +158,8 @@ def processTrainFare(req):
     fromstation = "ktym"
     tostation = "hyb"
     age = makeYqlQueryForAge(req)
-    pref = "SL" #makeYqlQueryForClass(req)
-    quota = "GN" #makeYqlQueryForQuota(req)
+    pref = makeYqlQueryForClass(req)
+    quota = makeYqlQueryForQuota(req):
     dat = "21-04-2018" # makeYqlQueryForDat(req)
     yql_url = "https://api.railwayapi.com/v2/fare/train/"+trainnum+"/source/"+fromstation+"/dest/"+tostation+"/age/"+age+"/pref/"+pref+"/quota/"+quota+"/date/"+dat+"/apikey/"+apikey
     result = urlopen(yql_url).read()
