@@ -156,7 +156,7 @@ def processTrainFare(req):
         return {}
     baseurl = "https://api.railwayapi.com/v2/fare/train/"
     remain = "/apikey/"+apikey
-    trainnum = = makeYqlQuery(req)
+    trainnum = makeYqlQuery(req)
     if trainnum is None:
         return {}
     fromstation = makeYqlQueryForSrc(req)
