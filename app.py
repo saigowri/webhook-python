@@ -161,7 +161,7 @@ def processTrainFare(req):
     pref = "SL"
     quota = "GN"
     dat = "21-04-2018"
-    yql_url = "https://api.railwayapi.com/v2/fare/train/"+trainnum+"/source/"+fromstation+"/dest/"+tostation+"/age/"+age+"/pref/"+class+"/quota/"+quota+"/date/"+dat+"/apikey/zc4qtk7x4o"
+    yql_url = "https://api.railwayapi.com/v2/fare/train/"+trainnum+"/source/"+fromstation+"/dest/"+tostation+"/age/"+age+"/pref/"+pref+"/quota/"+quota+"/date/"+dat+"/apikey/zc4qtk7x4o"
     result = urlopen(yql_url).read()
     data = json.loads(result)
     res = makeWebhookResultForFARE(data)
