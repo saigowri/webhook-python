@@ -131,8 +131,12 @@ def processTrainBtwnStations(req):
         return {}
     baseurl = "https://api.railwayapi.com/v2/between/source/"
     remain = "/apikey/"+apikey
-    yql_query_src  = "ktym"
-    yql_query_des  = "hyb"
+    yql_query_src  = makeYqlQueryForSrc(req)
+    if yql_query_src is None:
+        return {}
+    yql_query_des  = makeYqlQueryForDes(req)
+    if yql_query_des is None:
+        return {}
     yql_query_date  = makeYqlQueryForDat(req)
     if yql_query_date is None:
         yql_query_date = datetime.date.today().strftime("%d-%m-%Y")
@@ -151,7 +155,7 @@ def processTrainFare(req):
     if req.get("result").get("action") != "TrainFare":
         return {}
     trainnum = makeYqlQuery(req)
-    fromstation = = makeYqlQueryForSrc(req)
+    fromstation =  makeYqlQueryForSrc(req)
     tostation = makeYqlQueryForDes(req)
     age = makeYqlQueryForAge(req)
     pref = makeYqlQueryForClass(req)
