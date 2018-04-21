@@ -168,8 +168,10 @@ def processTrainFare(req):
     parameters = result.get("parameters")
     trainSrc = parameters.get("station_code_name")
     fromstation =  trainSrc[0]
+    fromstation.strip()
 #     fromstation = "ktym"
     tostation = trainSrc[1]
+    tostation.strip()
 #     tostation = "hyb"
     trainnum = makeYqlQuery(req)
     age = makeYqlQueryForAge(req)
