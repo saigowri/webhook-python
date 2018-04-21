@@ -179,8 +179,20 @@ def processTrainFare(req):
     yql_url = "https://api.railwayapi.com/v2/fare/train/"+trainnum+"/source/"+fromstation+"/dest/"+tostation+"/age/"+age+"/pref/"+pref+"/quota/"+quota+"/date/"+dat+"/apikey/"+apikey
     result = urlopen(yql_url).read()
     data = json.loads(result)
-    res = makeWebhookResultForFARE(data)
-    return res
+    speech = data.get('fare')
+    train1 =  json.dumps(data.get('fare')) 
+    print("Here is fare : "+train1)
+    print("Here is from : "+fromstation)
+    print("Here is to : "+tostation)
+    print("Here is trnum : "+trainnum)
+    reply {
+        "speech": speech,
+        "displayText": speech,
+        # "data": data,
+        # "contextOut": [],
+        "source": "webhook-dm"
+    }
+    return reply
 
 def processCancelledTrains(req):
     if req.get("result").get("action") != "cancelledTrain":
