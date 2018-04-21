@@ -163,15 +163,15 @@ def processTrainBtwnStations(req):
 
 def processTrainFare(req):
     if req.get("result").get("action") != "TrainFare":
-        return {}
-    trainnum = makeYqlQuery(req)
+        return {}	
     result = req.get("result")
     parameters = result.get("parameters")
     trainSrc = parameters.get("station_code_name")
-#     fromstation =  trainSrc[0]
-    fromstation = "ktym"
-#     tostation = trainSrc[1]
-    tostation = "hyb"
+    trainnum = makeYqlQuery(req)
+    fromstation =  trainSrc[0]
+#     fromstation = "ktym"
+    tostation = trainSrc[1]
+#     tostation = "hyb"
     age = makeYqlQueryForAge(req)
     pref = makeYqlQueryForClass(req)
     quota = makeYqlQueryForQuota(req)
