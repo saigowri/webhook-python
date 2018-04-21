@@ -182,9 +182,12 @@ def processTrainFare(req):
     speech = data.get('fare')
     train1 =  json.dumps(data.get('fare')) 
     print("Here is fare : "+train1)
-    print("Here is from : "+fromstation)
-    print("Here is to : "+tostation)
-    print("Here is trnum : "+trainnum)
+    train12 =  json.dumps(fromstation)
+    print("Here is from : "+train12)
+    train123 =  json.dumps(tostation)
+    print("Here is to : "+train123)
+    train1234 =  json.dumps(trainnum)
+    print("Here is trnum : "+train1234)
     reply {
         "speech": speech,
         "displayText": speech,
