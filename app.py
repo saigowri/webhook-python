@@ -64,6 +64,8 @@ def webhook():
         res = processPNRStatus(req)
     if req.get("result").get("action") == "stationName":
         res = processStationName(req)
+    if req.get("result").get("action") == "arrival":
+        res = processArrival(req)
     res = json.dumps(res, indent=4)
 
     r = make_response(res)
@@ -349,6 +351,22 @@ def processStationName(req):
             "source": "webhook-dm"
             }
     return reply
+
+
+#Train Arrival
+def processArrival(req):
+    if req.get("result").get("action") != "arrival":
+        return {}
+    baseurl = "https://api.railwayapi.com/v2/arrivals/station/"
+    result = req.get("result")
+    parameters = result.get("parameters")
+    stnCode = parameters.get("station_code_name")
+    remain = stnCode +"/hours/4/apikey/"+apikey
+    yql_url = baseurl+remain
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    res = makeWebhookResultArrival(data)
+    return res
   
 # ----------------------------------------json data extraction functions---------------------------------------------------
 
@@ -452,6 +470,21 @@ def makeWebhookResultForFARE(data,a,b,c):
         "source": "webhook-dm"
     }
 	
+	
+def makeWebhookResultArrival(data):
+    msg = []
+    speech = ""
+    for code in data['trains']:
+        speech =  speech +code['name']  +" sch arr :"+ code['scharr'] +" sch dep :"+ code['schdep'] +" delayed dep: "+ code['delaydep']+",  "
+        msg.append(code['name']  +" sch arr :"+ code['scharr'] +" sch dep :"+ code['schdep'] +" delayed dep :"+ code['delaydep']);
+    messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
+    reply = {
+            "speech": speech,
+            "displayText": speech,
+            "messages": messages,
+            "source": "webhook-dm"
+            }
+    return reply
 # ------------------------------------query parameter extracting functions---------------------------------------------------
 
 
