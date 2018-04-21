@@ -478,6 +478,8 @@ def makeWebhookResultArrival(data):
         speech =  speech +code['name']  +" sch arr :"+ code['scharr'] +" sch dep :"+ code['schdep'] +" delayed dep: "+ code['delaydep']+",  "
         msg.append(code['name']  +" sch arr :"+ code['scharr'] +" sch dep :"+ code['schdep'] +" delayed dep :"+ code['delaydep']);
     messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
+    x =  json.dumps(messages) 
+    print("Here is from : "+x)
     reply = {
             "speech": speech,
             "displayText": speech,
