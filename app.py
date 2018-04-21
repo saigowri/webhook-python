@@ -168,8 +168,6 @@ def processTrainFare(req):
     result = req.get("result")
     parameters = result.get("parameters")
     trainSrc = parameters.get("station_code_name")
-    if trainSrc is None:
-        return None
     fromstation =  trainSrc[0]
     tostation = trainSrc[1]
     age = makeYqlQueryForAge(req)
