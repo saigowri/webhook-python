@@ -355,8 +355,6 @@ def processStationName(req):
 
 #Train Arrival
 def processArrival(req):
-    if req.get("result").get("action") != "arrival":
-        return {}
     baseurl = "https://api.railwayapi.com/v2/arrivals/station/"
     result = req.get("result")
     parameters = result.get("parameters")
