@@ -169,9 +169,9 @@ def processTrainFare(req):
     parameters = result.get("parameters")
     trainSrc = parameters.get("station_code_name")
 #     fromstation =  trainSrc[0]
-	fromstation = "ktym"
+    fromstation = "ktym"
 #     tostation = trainSrc[1]
-	tostation = "hyb"
+    tostation = "hyb"
     age = makeYqlQueryForAge(req)
     pref = makeYqlQueryForClass(req)
     quota = makeYqlQueryForQuota(req)
