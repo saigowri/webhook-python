@@ -444,13 +444,6 @@ def makeWebhookResultForFARE(data,a,b,c):
     print("Here is to : "+y)
     z =  json.dumps(c) 
     print("Here is trnum : "+z)
-    if not speech:
-        speech = "Sorry No Tickets Available!!!"
-        return {
-            "speech": speech,
-            "displayText": speech,
-            "source": "webhook-dm"
-               }
     return {
         "speech": speech,
         "displayText": speech,
