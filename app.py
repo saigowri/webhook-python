@@ -179,23 +179,8 @@ def processTrainFare(req):
     yql_url = "https://api.railwayapi.com/v2/fare/train/"+trainnum+"/source/"+fromstation+"/dest/"+tostation+"/age/"+age+"/pref/"+pref+"/quota/"+quota+"/date/"+dat+"/apikey/"+apikey
     result = urlopen(yql_url).read()
     data = json.loads(result)
-    speech = data.get('fare')
-    train1 =  json.dumps(data.get('fare')) 
-    print("Here is fare : "+train1)
-    train12 =  json.dumps(fromstation)
-    print("Here is from : "+train12)
-    train123 =  json.dumps(tostation)
-    print("Here is to : "+train123)
-    train1234 =  json.dumps(trainnum)
-    print("Here is trnum : "+train1234)
-    reply {
-        "speech": speech,
-        "displayText": speech,
-        # "data": data,
-        # "contextOut": [],
-        "source": "webhook-dm"
-    }
-    return reply
+    res = makeWebhookResultForFARE(data,fromstation,tostation,trainnum)
+    return res
 
 def processCancelledTrains(req):
     if req.get("result").get("action") != "cancelledTrain":
@@ -447,10 +432,16 @@ def makeWebhookResultForBtwnStations(data):
             }
     return reply
 
-def makeWebhookResultForFARE(data):
+def makeWebhookResultForFARE(data,a,b,c):
     speech = data.get('fare')
     train_num =  json.dumps(data.get('fare')) 
     print("Here is fare : "+train_num)
+    x =  json.dumps(a) 
+    print("Here is from : "+x)
+    y =  json.dumps(b) 
+    print("Here is to : "+y)
+    z =  json.dumps(c) 
+    print("Here is trnum : "+z)
     return {
         "speech": speech,
         "displayText": speech,
