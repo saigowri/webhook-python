@@ -36,7 +36,7 @@ app = Flask(__name__)
 
 #----------------------------------------Main Entry Point---------------------------------------------------
 
-apikey = "qv6maolyg3"
+apikey = "zc4qtk7x4o"
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
