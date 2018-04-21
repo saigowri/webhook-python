@@ -35,7 +35,9 @@ from flask import make_response
 app = Flask(__name__)
 
 #----------------------------------------Main Entry Point---------------------------------------------------
+
 apikey = "qv6maolyg3"
+
 @app.route('/webhook', methods=['POST'])
 def webhook():
     req = request.get_json(silent=True, force=True)
@@ -162,37 +164,14 @@ def processTrainBtwnStations(req):
 def processTrainFare(req):
     if req.get("result").get("action") != "TrainFare":
         return {}
-    baseurl = "https://api.railwayapi.com/v2/fare/train/"
-    remain = "/apikey/"+apikey
-    yql_query_date  = makeYqlQueryForDat(req)
-    yql_query_src  = makeYqlQueryForSrc(req)
-    if yql_query_src is None:
-        return {}
-    yql_query_des  = makeYqlQueryForDes(req)
-    if yql_query_des is None:
-        return {}
-    yql_query_train = makeYqlQuery(req)
-    if yql_query_train is None:
-        return {}
-    age  = makeYqlQueryForAge(req)
-    if age is None:
-        return {}
+    trainnum = makeYqlQuery(req)
+    fromstation = "ktym"
+    tostation = "hyb"
+    age = makeYqlQueryForAge(req)
     pref = makeYqlQueryForClass(req)
-    if pref is None:
-        return {}
     quota = makeYqlQueryForQuota(req)
-    if quota is None:
-        return {}
-    x = "/source/" + yql_query_src
-    y = "/dest/" + yql_query_des
-    z = yql_query_train + x + y
-    m = "/age/"+ age
-    n = "/pref/"+ pref
-    o = "/quota/"+ quota
-    r = m + n + o
-    date = "/date/" + yql_query_date
-    f = z + r + date
-    yql_url = baseurl + f + remain
+    dat = makeYqlQueryForDat(req)
+    yql_url = "https://api.railwayapi.com/v2/fare/train/"+trainnum+"/source/"+fromstation+"/dest/"+tostation+"/age/"+age+"/pref/"+pref+"/quota/"+quota+"/date/"+dat+"/apikey/"+apikey
     result = urlopen(yql_url).read()
     data = json.loads(result)
     res = makeWebhookResultForFARE(data)
@@ -538,6 +517,24 @@ def makeYqlQueryForAge(req):
     if age is None:
         return None
     return age
+
+
+
+def makeQueryForfromstation(req):
+    result = req.get("result")
+    parameters = result.get("parameters")
+    trainSrc = parameters.get("from")
+    if trainSrc is None:
+        return None
+    return trainSrc
+
+def makeQueryFortostation(req):
+    result = req.get("result")
+    parameters = result.get("parameters")
+    trainSrc = parameters.get("to")
+    if trainSrc is None:
+        return None
+    return trainSrc
 
 # ------------------------------------extra function of weather project for referencing---------------------------------------------------
 
