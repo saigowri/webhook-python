@@ -167,11 +167,11 @@ def processTrainFare(req):
     result = req.get("result")
     parameters = result.get("parameters")
     trainSrc = parameters.get("station_code_name")
-    trainnum = makeYqlQuery(req)
     fromstation =  trainSrc[0]
 #     fromstation = "ktym"
     tostation = trainSrc[1]
 #     tostation = "hyb"
+    trainnum = makeYqlQuery(req)
     age = makeYqlQueryForAge(req)
     pref = makeYqlQueryForClass(req)
     quota = makeYqlQueryForQuota(req)
@@ -434,6 +434,8 @@ def makeWebhookResultForBtwnStations(data):
 
 def makeWebhookResultForFARE(data):
     speech = data.get('fare')
+    train_num =  json.dumps(data.get('fare')) 
+    print("Here is fare : "+train_num)
     return {
         "speech": speech,
         "displayText": speech,
