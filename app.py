@@ -396,7 +396,7 @@ def processRescheduledTrains(req):
     d =  json.dumps(trainvar) 
     print("train num or name: "+d)
     m =  json.dumps(yql_query_train) 
-    print("train type: "+)
+    print("train type: "+m)
     yql_url = baseurl + date + remain
     b =  json.dumps(yql_url) 
     print("url: "+b)
