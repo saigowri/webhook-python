@@ -415,13 +415,13 @@ def processRescheduledTrains(req):
         if yql_query_train.lower() in train[trainvar].lower():
             speech = train['name'] + " having train number " + train['number'] + " is rescheduled on " + yql_query_date
             msg.append( train['name'] + " having train number " + train['number'] + " is rescheduled on " + yql_query_date)
-            flag = 1
+            flag = 1   
+	    tzbc = json.dumps(data.get("trains").get("rescheduled_date"))   
+            print("Here is rescheduled_date : "+tzbc)
             break
         if flag == 0:
             speech = "The train is not rescheduled on " + yql_query_date
             msg.append( "The train is not rescheduled on " + yql_query_date)
-        tzbc = json.dumps(data.get("trains").get("rescheduled_date"))   
-        print("Here is rescheduled_date : "+tzbc)
     messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
     reply = {
             "speech": speech,
