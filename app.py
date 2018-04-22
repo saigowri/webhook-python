@@ -66,8 +66,9 @@ def webhook():
         res = processStationName(req)
     if req.get("result").get("action") == "arrival":
         res = processArrival(req)
+    if req.get("result").get("action") == "rescheduledTrain":
+        res = processRescheduledTrains(req)
     res = json.dumps(res, indent=4)
-
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
@@ -366,6 +367,52 @@ def processArrival(req):
     res = makeWebhookResultArrival(data)
     return res
   
+	
+#Train Reschedule
+def processRescheduledTrains(req):
+    if req.get("result").get("action") != "rescheduledTrain":
+        return {}
+    baseurl = "https://api.railwayapi.com/v2/rescheduled"
+    remain = "/apikey/"+apikey
+    yql_query_date  = makeYqlQueryForDat(req)
+    if yql_query_date is None:
+        yql_query_date = datetime.date.today().strftime("%d-%m-%Y")
+    #get train name or number
+    result = req.get("result")
+    parameters = result.get("parameters")
+    trainvar = ""
+    trainname = parameters.get("Train_name")
+    if trainname:
+        yql_query_train = trainname
+        trainvar = 'name'
+    trainnum = parameters.get("Train_numbers") 
+    if trainnum:
+        yql_query_train = trainnum
+        trainvar = 'number'
+    date = "/date/" + yql_query_date
+    yql_url = baseurl + date + remain
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    msg = []
+    speech = ""
+    flag = 0
+    for train in data['trains']:
+        if yql_query_train.lower() in train[trainvar].lower():
+            speech = train['name'] + " having train number " + train['number'] + " is rescheduled on " + yql_query_date
+            msg.append( train['name'] + " having train number " + train['number'] + " is rescheduled on " + yql_query_date)
+            flag = 1
+            break
+    if flag == 0:
+        speech = "The train is not rescheduled on " + yql_query_date
+        msg.append( "The train is not rescheduled on " + yql_query_date)
+    messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
+    reply = {
+            "speech": speech,
+            "displayText": speech,
+            "messages": messages,
+            "source": "webhook-dm"
+            }
+    return reply 
 # ----------------------------------------json data extraction functions---------------------------------------------------
 
 def makeWebhookResultStatus(data):
