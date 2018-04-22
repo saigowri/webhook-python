@@ -220,9 +220,9 @@ def processCancelledTrains(req):
             msg.append( train['name'] + " having train number " + train['number'] + " is cancelled on " + yql_query_date)
             flag = 1
             break
-    if flag == 0:
-        speech = "The train is not cancelled on " + yql_query_date
-        msg.append( "The train is not cancelled on " + yql_query_date)
+    	if flag == 0:
+            speech = "The train is not cancelled on " + yql_query_date
+            msg.append( "The train is not cancelled on " + yql_query_date)
     messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
     reply = {
             "speech": speech,
@@ -377,8 +377,8 @@ def processRescheduledTrains(req):
     baseurl = "https://api.railwayapi.com/v2/rescheduled"
     remain = "/apikey/"+apikey
     yql_query_date  = makeYqlQueryForDat(req)
-#     if yql_query_date is None:
-#         yql_query_date = datetime.date.today().strftime("%d-%m-%Y")
+    if yql_query_date is None:
+        yql_query_date = datetime.date.today().strftime("%d-%m-%Y")
     date = "/date/" + yql_query_date
     c =  json.dumps(date) 
     print("date: "+c)
@@ -386,15 +386,17 @@ def processRescheduledTrains(req):
     if trainname:
         yql_query_train = trainname
         trainvar = 'name'
-#     trainnum = parameters.get("Train_numbers") 
-#     if trainnum:
-#         yql_query_train = trainnum
-#         trainvar = 'number'
+     trainnum = parameters.get("Train_numbers") 
+    if trainnum:
+        yql_query_train = trainnum
+        trainvar = 'number'
     result = req.get("result")
     parameters = result.get("parameters")
     trainvar = ""
-    d =  json.dumps(yql_query_train) 
+    d =  json.dumps(trainvar) 
     print("train num or name: "+d)
+    m =  json.dumps(yql_query_train) 
+    print("train type: "+)
     yql_url = baseurl + date + remain
     b =  json.dumps(yql_url) 
     print("url: "+b)
@@ -407,8 +409,8 @@ def processRescheduledTrains(req):
     print("Here is tname or num : "+tzbcd)
     tzbcde =  json.dumps(trainvar) 
     print("Here is ttype : "+tzbcde)
-    tzbcdef =  json.dumps(data) 
-    print("Here is ttype : "+tzbcdef)
+    tzbcdef =  json.dumps("END") 
+    print("Here is end : "+tzbcdef)
     for train in data['trains']:
         if yql_query_train.lower() in train[trainvar].lower():
             speech = train['name'] + " having train number " + train['number'] + " is rescheduled on " + yql_query_date
