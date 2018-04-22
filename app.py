@@ -418,7 +418,7 @@ def processRescheduledTrains(req):
             speech = train['name'] + " having train number " + train['number'] + " is rescheduled on " + yql_query_date
             msg.append( train['name'] + " having train number " + train['number'] + " is rescheduled on " + yql_query_date)
             flag = 1   
-            tzbc = json.dumps(data.get("trains").get("rescheduled_date"))
+            tzbc = json.dumps(speech)
             print("Here is rescheduled_date : "+tzbc)
             break
     if flag == 0:
