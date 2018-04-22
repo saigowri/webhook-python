@@ -412,7 +412,9 @@ def processRescheduledTrains(req):
     tzbcdef =  json.dumps("END") 
     print("Here is end : "+tzbcdef)
     for train in data['trains']:
-        if yql_query_train.lower() in train[trainvar].lower():
+        bbb = json.dumps("bla")
+        print("Here is b4 if : "+bbb)
+        if yql_query_train.lower() in train['name'].lower():
             speech = train['name'] + " having train number " + train['number'] + " is rescheduled on " + yql_query_date
             msg.append( train['name'] + " having train number " + train['number'] + " is rescheduled on " + yql_query_date)
             flag = 1   
