@@ -377,25 +377,24 @@ def processRescheduledTrains(req):
     baseurl = "https://api.railwayapi.com/v2/rescheduled"
     remain = "/apikey/"+apikey
     yql_query_date  = makeYqlQueryForDat(req)
-    if yql_query_date is None:
-        yql_query_date = datetime.date.today().strftime("%d-%m-%Y")
-    #get train name or number
-    result = req.get("result")
-    parameters = result.get("parameters")
-    trainvar = ""
-    trainname = parameters.get("Train_name")
-    if trainname:
-        yql_query_train = trainname
-        trainvar = 'name'
-    trainnum = parameters.get("Train_numbers") 
-    if trainnum:
-        yql_query_train = trainnum
-        trainvar = 'number'
-    d =  json.dumps(yql_query_train) 
-    print("train num or name: "+d)
+#     if yql_query_date is None:
+#         yql_query_date = datetime.date.today().strftime("%d-%m-%Y")
     date = "/date/" + yql_query_date
     c =  json.dumps(date) 
     print("date: "+c)
+    trainname = "venad" #parameters.get("Train_name")
+    if trainname:
+        yql_query_train = trainname
+        trainvar = 'name'
+#     trainnum = parameters.get("Train_numbers") 
+#     if trainnum:
+#         yql_query_train = trainnum
+#         trainvar = 'number'
+    result = req.get("result")
+    parameters = result.get("parameters")
+    trainvar = ""
+    d =  json.dumps(yql_query_train) 
+    print("train num or name: "+d)
     yql_url = baseurl + date + remain
     b =  json.dumps(yql_url) 
     print("url: "+b)
