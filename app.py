@@ -386,7 +386,7 @@ def processRescheduledTrains(req):
     if trainname:
         yql_query_train = trainname
         trainvar = 'name'
-     trainnum = parameters.get("Train_numbers") 
+    trainnum = parameters.get("Train_numbers") 
     if trainnum:
         yql_query_train = trainnum
         trainvar = 'number'
