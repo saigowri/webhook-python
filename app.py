@@ -370,8 +370,12 @@ def processArrival(req):
 	
 #Train Reschedule
 def processRescheduledTrains(req):
+    a =  json.dumps("HI...") 
+    print("AAAAAA: "+a)
     if req.get("result").get("action") != "rescheduledTrain":
         return {}
+    b =  json.dumps("Hw R u") 
+    print("BBBBBB: "+b)
     baseurl = "https://api.railwayapi.com/v2/rescheduled"
     remain = "/apikey/"+apikey
     yql_query_date  = makeYqlQueryForDat(req)
