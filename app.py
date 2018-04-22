@@ -374,8 +374,6 @@ def processRescheduledTrains(req):
     print("AAAAAA: "+a)
     if req.get("result").get("action") != "rescheduledTrain":
         return {}
-    b =  json.dumps("Hw R u") 
-    print("BBBBBB: "+b)
     baseurl = "https://api.railwayapi.com/v2/rescheduled"
     remain = "/apikey/"+apikey
     yql_query_date  = makeYqlQueryForDat(req)
@@ -393,8 +391,14 @@ def processRescheduledTrains(req):
     if trainnum:
         yql_query_train = trainnum
         trainvar = 'number'
+    d =  json.dumps(yql_query_train) 
+    print("train num or name: "+d)
     date = "/date/" + yql_query_date
+    c =  json.dumps(date) 
+    print("date: "+c)
     yql_url = baseurl + date + remain
+    b =  json.dumps(yql_url) 
+    print("url: "+b)
     result = urlopen(yql_url).read()
     data = json.loads(result)
     msg = []
