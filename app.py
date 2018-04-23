@@ -519,13 +519,10 @@ def makeWebhookResultForBtwnStations(data):
 def makeWebhookResultForFARE(data,a,b,c):
     speech = data.get('fare')
     train_num =  json.dumps(data.get('fare')) 
-    print("Here is fare : "+train_num)
-    x =  json.dumps(a) 
-    print("Here is from : "+x)
-    y =  json.dumps(b) 
-    print("Here is to : "+y)
-    z =  json.dumps(c) 
-    print("Here is trnum : "+z)
+    if train_num == "null":
+        speech = "No tickets available !!!"
+    else:
+        speech = "Here is the fare : " + train_num
     return {
         "speech": speech,
         "displayText": speech,
