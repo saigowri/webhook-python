@@ -523,7 +523,7 @@ def makeWebhookResultForFARE(data,a,b,c):
     if train_num == "null":
         speech = "No tickets available !!!"
     else:
-        speech = "Here is the fare : " + train_num
+        speech = "Here is the fare : Rs." + train_num
     return {
         "speech": speech,
         "displayText": speech,
