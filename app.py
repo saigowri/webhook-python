@@ -36,7 +36,7 @@ app = Flask(__name__)
 
 #----------------------------------------Main Entry Point---------------------------------------------------
 
-apikey = "qv6maolyg3"
+apikey = "zc4qtk7x4o"
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
@@ -64,8 +64,11 @@ def webhook():
         res = processPNRStatus(req)
     if req.get("result").get("action") == "stationName":
         res = processStationName(req)
+    if req.get("result").get("action") == "arrival":
+        res = processArrival(req)
+    if req.get("result").get("action") == "rescheduledTrain":
+        res = processRescheduledTrains(req)
     res = json.dumps(res, indent=4)
-
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
@@ -142,9 +145,11 @@ def processTrainBtwnStations(req):
     baseurl = "https://api.railwayapi.com/v2/between/source/"
     remain = "/apikey/"+apikey
     yql_query_src  = makeYqlQueryForSrc(req)
+    yql_query_src = yql_query_src.strip()
     if yql_query_src is None:
         return {}
     yql_query_des  = makeYqlQueryForDes(req)
+    yql_query_des = yql_query_des.strip()
     if yql_query_des is None:
         return {}
     yql_query_date  = makeYqlQueryForDat(req)
@@ -163,10 +168,17 @@ def processTrainBtwnStations(req):
 
 def processTrainFare(req):
     if req.get("result").get("action") != "TrainFare":
-        return {}
+        return {}	
+    result = req.get("result")
+    parameters = result.get("parameters")
+    trainSrc = parameters.get("station_code_name")
+    fromstation =  trainSrc[0]
+    fromstation = fromstation.strip()
+#     fromstation = "ktym"
+    tostation = trainSrc[1]
+    tostation = tostation.strip()
+#     tostation = "hyb"
     trainnum = makeYqlQuery(req)
-    fromstation = "ktym"
-    tostation = "hyb"
     age = makeYqlQueryForAge(req)
     pref = makeYqlQueryForClass(req)
     quota = makeYqlQueryForQuota(req)
@@ -174,7 +186,7 @@ def processTrainFare(req):
     yql_url = "https://api.railwayapi.com/v2/fare/train/"+trainnum+"/source/"+fromstation+"/dest/"+tostation+"/age/"+age+"/pref/"+pref+"/quota/"+quota+"/date/"+dat+"/apikey/"+apikey
     result = urlopen(yql_url).read()
     data = json.loads(result)
-    res = makeWebhookResultForFARE(data)
+    res = makeWebhookResultForFARE(data,fromstation,tostation,trainnum)
     return res
 
 def processCancelledTrains(req):
@@ -210,9 +222,9 @@ def processCancelledTrains(req):
             msg.append( train['name'] + " having train number " + train['number'] + " is cancelled on " + yql_query_date)
             flag = 1
             break
-    if flag == 0:
-        speech = "The train is not cancelled on " + yql_query_date
-        msg.append( "The train is not cancelled on " + yql_query_date)
+        if flag == 0:
+            speech = "The train is not cancelled on " + yql_query_date
+            msg.append( "The train is not cancelled on " + yql_query_date)
     messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
     reply = {
             "speech": speech,
@@ -342,7 +354,86 @@ def processStationName(req):
             "source": "webhook-dm"
             }
     return reply
+
+
+#Train Arrival
+def processArrival(req):
+    baseurl = "https://api.railwayapi.com/v2/arrivals/station/"
+    result = req.get("result")
+    parameters = result.get("parameters")
+    stnCode = parameters.get("station_code_name")
+    remain = stnCode +"/hours/4/apikey/"+apikey
+    yql_url = baseurl+remain
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    res = makeWebhookResultArrival(data)
+    return res
   
+	
+#Train Reschedule
+def processRescheduledTrains(req):
+    a =  json.dumps("HI...") 
+    print("AAAAAA: "+a)
+    if req.get("result").get("action") != "rescheduledTrain":
+        return {}
+    baseurl = "https://api.railwayapi.com/v2/rescheduled"
+    remain = "/apikey/"+apikey
+    yql_query_date  = makeYqlQueryForDat(req)
+    if yql_query_date is None:
+        yql_query_date = datetime.date.today().strftime("%d-%m-%Y")
+    date = "/date/" + yql_query_date
+    c =  json.dumps(date) 
+    print("date: "+c)
+    trainvar = ""
+    result = req.get("result")
+    parameters = result.get("parameters")
+    trainname = parameters.get("Train_name")
+    if trainname:
+        yql_query_train = trainname
+        trainvar = 'name'
+    trainnum = parameters.get("Train_numbers") 
+    if trainnum:
+        yql_query_train = trainnum
+        trainvar = 'number'
+    d =  json.dumps(trainvar) 
+    print("train num or name: "+d)
+    m =  json.dumps(yql_query_train) 
+    print("train type: "+m)
+    yql_url = baseurl + date + remain
+    b =  json.dumps(yql_url) 
+    print("url: "+b)
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    msg = []
+    speech = ""
+    flag = 0
+    tzbcd =  json.dumps(yql_query_train) 
+    print("Here is tname or num : "+tzbcd)
+    tzbcde =  json.dumps(trainvar) 
+    print("Here is ttype : "+tzbcde)
+    tzbcdef =  json.dumps("END") 
+    print("Here is end : "+tzbcdef)
+    for train in data['trains']:
+        bbb = json.dumps("bla")
+        print("Here is b4 if : "+bbb)
+        if yql_query_train.lower() in train['name'].lower():
+            speech = train['name'] + " having train number " + train['number'] + " is rescheduled on " + yql_query_date
+            msg.append( train['name'] + " having train number " + train['number'] + " is rescheduled on " + yql_query_date)
+            flag = 1   
+            tzbc = json.dumps(speech)
+            print("Here is rescheduled_date : "+tzbc)
+            break
+    if flag == 0:
+        speech = "The train is not cancelled on " + yql_query_date
+        msg.append( "The train is not cancelled on " + yql_query_date)
+    messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
+    reply = {
+            "speech": speech,
+            "displayText": speech,
+            "messages": messages,
+            "source": "webhook-dm"
+            }
+    return reply 
 # ----------------------------------------json data extraction functions---------------------------------------------------
 
 def makeWebhookResultStatus(data):
@@ -412,8 +503,8 @@ def makeWebhookResultForBtwnStations(data):
     msg = []
     speech = ""
     if not data['trains']:
-        speech = "No Trains in that route"
-        msg.append("No Trains in that route")
+        speech = "Sorry, no trains in that route"
+        msg.append("Sorry, no trains in that route")
     for train in data['trains']:
         speech = speech + train['name'] + ", Starts at "+ train['src_departure_time'] +", Reaches at "+ train['dest_arrival_time'] +","
         msg.append( train['name'] +", Starts at "+ train['src_departure_time'] +", Reaches at "+ train['dest_arrival_time'])
@@ -427,8 +518,14 @@ def makeWebhookResultForBtwnStations(data):
             }
     return reply
 
-def makeWebhookResultForFARE(data):
+def makeWebhookResultForFARE(data,a,b,c):
     speech = data.get('fare')
+    train_num =  json.dumps(data.get('fare')) 
+    print(train_num)
+    if train_num == "null":
+        speech = "No tickets available !!!"
+    else:
+        speech = "Here is the fare : Rs." + train_num
     return {
         "speech": speech,
         "displayText": speech,
@@ -437,6 +534,23 @@ def makeWebhookResultForFARE(data):
         "source": "webhook-dm"
     }
 	
+	
+def makeWebhookResultArrival(data):
+    msg = []
+    speech = ""
+    for code in data['trains']:
+        speech =  speech +code['name']  +" sch arr :"+ code['scharr'] +" sch dep :"+ code['schdep'] +" delayed dep: "+ code['delaydep']+",  "
+        msg.append(code['name']  +" sch arr :"+ code['scharr'] +" sch dep :"+ code['schdep'] +" delayed dep :"+ code['delaydep']);
+    messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
+    x =  json.dumps(messages) 
+    print("Here is from : "+x)
+    reply = {
+            "speech": speech,
+            "displayText": speech,
+            "messages": messages,
+            "source": "webhook-dm"
+            }
+    return reply
 # ------------------------------------query parameter extracting functions---------------------------------------------------
 
 
