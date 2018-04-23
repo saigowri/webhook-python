@@ -519,6 +519,7 @@ def makeWebhookResultForBtwnStations(data):
 def makeWebhookResultForFARE(data,a,b,c):
     speech = data.get('fare')
     train_num =  json.dumps(data.get('fare')) 
+    print(train_num)
     if train_num == "null":
         speech = "No tickets available !!!"
     else:
