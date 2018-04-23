@@ -224,9 +224,9 @@ def processCancelledTrains(req):
             msg.append( train['name'] + " having train number " + train['number'] + " is cancelled on " + yql_query_date)
             flag = 1
             break
-        if flag == 0:
-            speech = "The train is not cancelled on " + yql_query_date
-            msg.append( "The train is not cancelled on " + yql_query_date)
+    if flag == 0:
+        speech = "The train is not cancelled on " + yql_query_date
+        msg.append( "The train is not cancelled on " + yql_query_date)
     messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
     reply = {
             "speech": speech,
