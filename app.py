@@ -384,6 +384,7 @@ def processRescheduledTrains(req):
     print("date: "+c)
     trainvar = ""
     result = req.get("result")
+    parameters = result.get("parameters")
     trainname = parameters.get("Train_name")
     if trainname:
         yql_query_train = trainname
@@ -392,7 +393,6 @@ def processRescheduledTrains(req):
 #     if trainnum:
 #         yql_query_train = trainnum
 #         trainvar = 'number'
-    parameters = result.get("parameters")
     d =  json.dumps(trainvar) 
     print("train num or name: "+d)
     m =  json.dumps(yql_query_train) 
