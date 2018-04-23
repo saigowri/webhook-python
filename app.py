@@ -68,6 +68,8 @@ def webhook():
         res = processArrival(req)
     if req.get("result").get("action") == "rescheduledTrain":
         res = processRescheduledTrains(req)
+    if req.get("result").get("action") == "seatAvailability":
+        res = processSeatAvailability(req)
     res = json.dumps(res, indent=4)
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
@@ -434,6 +436,81 @@ def processRescheduledTrains(req):
             "source": "webhook-dm"
             }
     return reply 
+
+#Seat Availability
+def processSeatAvailability(req):
+    if req.get("result").get("action") != "seatAvailability":
+        return {}
+    msg = []
+    speech = ""
+    baseurl = "https://api.railwayapi.com/v2/check-seat/train/" 
+    remain = "/apikey/"+apikey
+    result = req.get("result")
+    parameters = result.get("parameters")
+    print(json.dumps(parameters))
+    trainNum = parameters.get("train_num")
+    print("trainNum " + trainNum)
+    if trainNum is None:
+        speech = "Please enter train number"
+    stationFrom = parameters.get("station_from")
+    print("stationFrom " + stationFrom)
+    if stationFrom is None:
+        speech = "Please enter source station"
+    stationTo = parameters.get("station_to")
+    print("stationTo " + stationTo)
+    if stationTo is None:
+        speech = "Please enter destination station"
+    date = parameters.get("date")
+    print("date " + date)
+    if date is None:
+        date = datetime.date.today().strftime("%d-%m-%Y")
+    else:
+        date = datetime.datetime.strptime(date, '%Y-%m-%d').strftime('%d-%m-%Y')
+    pref = parameters.get("class")
+    print("pref " + pref)
+    if pref is None:
+        speech = "Please enter travel class"
+    quota = parameters.get("quota")
+    print("quota " + quota)
+    if not quota:
+        speech = "Please enter travel quota"
+    print("speech " + speech)
+    if speech == "":
+        query = baseurl + trainNum + "/source/" + stationFrom + "/dest/" + stationTo + "/date/" + date + "/pref/" + pref + "/quota/" + quota + remain
+        print("query " + query)
+        result = urlopen(query).read()
+    data = json.loads(result)   
+#     #Process response
+    response_code = json.dumps(data.get("response_code"))
+    if response_code != "200":
+        print("response code "+response_code)
+        speech = "Sorry, No data available. Please check the train number/source/destination/quota/class"
+        msg.append(speech)
+    else:
+        train = json.dumps(data.get("train").get("name"))
+        print("train " + train)
+        speech = "The seat availability for the train " + train
+        train_num =  json.dumps(data.get("train").get("number")) 
+        print("Here "+train_num)
+        speech = speech + " (" + train_num + ") from station "
+        from_stat = json.dumps(data.get("from_station").get("name")) 
+        to_stat = json.dumps(data.get("to_station").get("name")) 
+        speech = speech + from_stat + " to the station " + to_stat
+        msg.append(speech)
+        print("Speech "+speech)
+        availability = []
+        for avail in data['availability']:
+            speech = speech + " on " + avail['date'] +": is " + avail['status'] + ", "
+            msg.append(" on " + avail['date'] +": is " + avail['status'])
+	
+    messages = [{"type": 0, "speech": s[0]} for s in zip(msg)]
+    reply = {
+            "speech": speech,
+            "displayText": speech,
+            "messages": messages,
+            "source": "webhook-dm"
+            }
+    return reply
 # ----------------------------------------json data extraction functions---------------------------------------------------
 
 def makeWebhookResultStatus(data):
